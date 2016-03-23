@@ -8,3 +8,8 @@ class FirmaRegistarSerializer(serializers.ModelSerializer):
 class UserRegistarSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRegistar
+
+#Haris
+class AdresarFirmaStavkaRegistarSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = AdresarFirmaStavkaRegistar;

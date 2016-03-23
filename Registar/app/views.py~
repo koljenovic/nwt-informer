@@ -25,3 +25,14 @@ class UserRegistarCreate(generics.ListCreateAPIView):
 class UserRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserRegistar.objects.all()
     serializer_class = UserRegistarSerializer
+
+#Haris
+
+class AdresarFirmaStavkaRegistarCreate(generics.CreateAPIView):
+    queryset = AdresarFirmaStavkaRegistar.objects.all()
+    serializer_class = AdresarFirmaStavkaRegistarSerializer
+
+class AdresarFirmaStavkaRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AdresarFirmaStavkaRegistar.objects.all()
+    setializer_class = AdresarFirmaStavkaRegistarSerializer
+

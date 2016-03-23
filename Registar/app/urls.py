@@ -12,6 +12,10 @@ urlpatterns = [
     url(r'^index/$', views.index, name='index'),
     url(r'^adresarfirmastavkaregistar/$', views.AdresarFirmaStavkaRegistarCreate.as_view()),
     url(r'^adresarfirmastavkaregistar/(?P<px>[0-9]+)/$', views.AdresarFirmaStavkaRegistarDetail.as_view()),
+    url(r'^korisnikregistar/$', views.KorisnikRegistarDetail.as_view()),
+    url(r'^korisnikregistar/(?P<pk>[0-9]+)/$', views.KorisnikRegistarDetail.as_view()),
+    url(r'^adresarlicestavkaregistar/$', views.AdresarLiceStavkaRegistarDetail.as_view()),
+    url(r'^adresarlicestavkaregistar/(?P<pk>[0-9]+)/$', views.AdresarLiceStavkaRegistarDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

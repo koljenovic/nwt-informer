@@ -36,3 +36,24 @@ class AdresarFirmaStavkaRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = AdresarFirmaStavkaRegistar.objects.all()
     setializer_class = AdresarFirmaStavkaRegistarSerializer
 
+
+
+#Adna
+class KorisnikRegistarDetail(generics.CreateAPIView):
+	queryset = KorisnikRegistar.objects.all()
+	serializer_class = KorisnikRegistarSerializer
+
+class KorisnikRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = KorisnikRegistar.objects.all()
+	serializer_class = KorisnikRegistarSerializer
+
+
+
+class AdresarLiceStavkaRegistarDetail(generics.CreateAPIView):
+	queryset = AdresarLiceStavkaRegistar.objects.all()
+	serializer_class = AdresarLiceStavkaRegistarSerializer
+
+class AdresarLiceStavkaRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = AdresarLiceStavkaRegistar.objects.all()
+	serializer_class = AdresarLiceStavkaRegistarSerializer
+
