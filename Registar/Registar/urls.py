@@ -19,4 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^app/', include('app.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^korisnici/', include('django.contrib.auth.urls')),
+    url(r'^korisnici/', include('registration.backends.default.urls')),
+    url(r'^captcha/', include('captcha.urls')),
 ]
