@@ -4,7 +4,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-    url(r'^index/$', views.index, name='index'),
+    
+    url(r'^$', views.index, name='index'),
+    url(r'^accounts/profile/$', views.index),
     url(r'^firmaregistar/$', views.FirmaRegistarCreate.as_view()),
     url(r'^firmaregistar/(?P<pk>[0-9]+)/$', views.FirmaRegistarDetail.as_view()),
     url(r'^userregistar/$', views.UserRegistarCreate.as_view()),

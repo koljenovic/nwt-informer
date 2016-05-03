@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("INDEX PAGE")
+    return HttpResponse("Korisnik: " + request.user.username)
 
 class FirmaRegistarCreate(generics.ListCreateAPIView):
     queryset = FirmaRegistar.objects.all()
