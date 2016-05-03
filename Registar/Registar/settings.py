@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 ACCOUNT_ACTIVATION_DAYS = 3
 REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_FORM = 'app.forms.RegistrationCaptcha'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
