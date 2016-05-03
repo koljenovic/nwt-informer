@@ -5,4 +5,5 @@ from djng.forms import NgFormValidationMixin, NgModelForm, NgModelFormMixin, NgF
 from djng.styling.bootstrap3.forms import Bootstrap3FormMixin
 
 class RegistrationCaptcha(Bootstrap3FormMixin, NgModelFormMixin, NgFormValidationMixin, NgModelForm, RegistrationForm):
+    template_name = 'registration/register.html'
     captcha = CaptchaField()

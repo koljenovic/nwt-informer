@@ -2,6 +2,7 @@ from django.shortcuts import render
 from app.models import *
 from app.serializers import *
 from rest_framework import generics
+from registration.views import RegistrationView
 
 # Create your views here.
 from django.http import HttpResponse
@@ -57,3 +58,5 @@ class AdresarLiceStavkaRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = AdresarLiceStavkaRegistar.objects.all()
 	serializer_class = AdresarLiceStavkaRegistarSerializer
 
+class RegisterView(RegistrationView):
+	template_name = 'registration/register.html'
