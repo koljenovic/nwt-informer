@@ -1,0 +1,121 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    font-family: 'Open Sans', Arial, sans-serif!important;
+}
+
+#cover-plain {
+    background-color: #eee;
+    padding: 15px 0;
+    font-size: 21px;
+    font-weight: 200;
+}
+
+.opaque {
+    background-color: rgba(255, 255, 255, 0.6);
+    margin: 0 -15px;
+    padding: inherit;
+}
+
+#logo, #logo-edit {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    padding: 5px;
+    background-color: white;
+    display: block;
+    margin: 0 auto;
+}
+#ticker {
+    background-color: #C9D1D3;
+    margin: 0;
+    padding: 0;
+}
+#ticker h3 {
+    font-weight: 700;
+}
+.navbar-brand {
+    padding: 13px 15px!important;
+}
+.navbar-brand img {
+    height: 25px!important;
+}
+#langbar a {
+    padding: 9px 5px;
+}
+.kartica {
+    min-height: 160px;
+    margin-bottom: 10px;
+    overflow: auto;
+}
+.kartica img {
+    height: 150px;
+    width: 150px;
+    float: left;
+    border-radius: 6px;
+    margin: 0 25px 0 000;
+}
+.kartica h4 {
+    color: #991818;
+    margin-bottom: 0;
+}
+.kartica h5 {
+    margin-top: 0;
+}
+.kartica-info {
+    float: left;
+    margin-left: 10px;
+    overflow: hidden;
+}
+.kartica-info ul {
+    min-width: 170px;
+    margin-left: 10px;
+}
+.kontakt {
+    overflow: hidden;
+}
+.kontakt h4 {
+    color: #991818;
+}
+.kontakt-info {
+    margin-left: 10px;
+}
+.kontakt-info ul {
+    margin-left: 10px;
+}
+#btn-menu {
+    margin: 25px 0;
+    padding: 0 20px;
+}
+#opis-edit {
+    font-family: 'Open Sans', Arial, sans-serif!important;
+    font-size: 21px;
+    font-weight: 200;
+    margin: -1px 0 0 -1px;
+    padding: 0;
+}
+#naziv-edit {
+    font-family: inherit!important;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px 25px 0 -1px;
+    padding: 0;
+}
+#adresa-edit, #jib-edit {
+    margin: 6px 0 2px -1px;
+    padding: 0;
+    height: 23px;
+}
+ #grad-edit, #pdv-edit {
+    margin-left: -1px;
+    padding: 0;
+    height: 23px;
+}
+.item-admin {
+    float: right;
+    clear: both;
+}
+#logo-edit {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}

@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-
+from django.views.generic import TemplateView
 from app.views import *
 
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^api/adresar/$', AdresarCreate.as_view()),
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
-    url(r'^firma/$', FirmaFormView.as_view()),
+    url(r'^firma/$', TemplateView.as_view(template_name='parts/firma.html')),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from registration.views import RegistrationView
 from app.forms import *
 from django.views.generic.edit import FormView
-
+from rest_framework.permissions import AllowAny, DjangoModelPermissions
 
 def index(request):
     return HttpResponse("Korisnik: " + request.user.username)
@@ -15,6 +15,7 @@ def index(request):
 class RegisterView(RegistrationView):
     template_name = 'registration/register.html'
     form_class = RegistrationCaptcha
+
 
 class FirmaFormView(FormView):
     template_name = 'forms/generic.html'

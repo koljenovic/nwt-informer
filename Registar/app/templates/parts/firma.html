@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}
+<div id="ticker">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 ng-hide="editMode">{- firma.naziv -}</h3>
+                <input type="text" ng-model="firma.naziv" ng-show="editMode" class="form-control" id="naziv-edit">
+            </div>
+            <div class="col-md-2">
+                <h5 ng-hide="editMode">{- firma.adresa -}</h5>
+                <input type="text" ng-model="firma.adresa" ng-show="editMode" class="form-control" id="adresa-edit">
+                <h5 ng-hide="editMode">{- firma.grad_fk.postanski_broj -}, {- firma.grad_fk.naziv -}</h5>
+                <select type="text" ng-options="gradTmp as gradTmp.postanski_broj + ', ' + gradTmp.naziv for gradTmp in gradovi track by gradTmp.id" ng-model="firma.grad_fk" ng-show="editMode" class="form-control" id="grad-edit"></select>
+            </div>
+            <div class="col-md-2">
+                <h5><strong>Marketing</strong></h5>
+                <h5><a href="tel:+38733727279">+387 33 727-279</a></h5>
+            </div>
+            <div class="col-md-2">
+                <h5 ng-hide="editMode">JIB: {- firma.id_broj -}</h5>
+                <input type="text" ng-model="firma.id_broj" ng-show="editMode" class="form-control" id="jib-edit">
+                <h5 ng-hide="editMode">PDV: {- firma.pdv_broj -}</h5>
+                <input type="text" ng-model="firma.pdv_broj" ng-show="editMode" class="form-control" id="pdv-edit">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cover-plain">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="http://www.klas.ba/">
+                    <img id="logo" ng-hide="editMode" src="/static/img/{- firma.logo -}" />
+                    <img id="logo-edit" ng-show="editMode" src="/static/img/{- firma.logo -}" />
+                </a>
+
+            </div>
+            <div class="col-md-9">
+                <textarea id="opis-edit" ng-show="editMode" ng-model="firma.opis" class="form-control" rows="6">{- firma.opis -}</textarea>
+                <p id="opis" ng-hide="editMode" >{- firma.opis -}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <div id="btn-menu">
+                        <button type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Prijavi se</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> Dodaj u imenik</button>
+                        <button ng-click="saveChanges()" ng-class="editMode ? 'btn-danger' : ''" type="button" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {- editMode ? 'Spremi izmjene' : 'Uredi profil' -}</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h2>Kontakti <button tooltip-placement="top" tooltip-trigger uib-tooltip="Dodaj novi kontakt" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></h2>
+                    <div class="kontakt thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <div class="kontakt-info">
+                            <h4>Veleprodaja</h4>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> veleprodaja@klas.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 230</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 641 029</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kontakt thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <div class="kontakt-info">
+                            <h4>Maloproadja</h4>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> maloprodaja@klas.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 146</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 664 190</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kontakt thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <div class="kontakt-info">
+                            <h4>KLAS Centar Mostar</h4>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Bišće polje bb, Mostar</li>
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> veleprodaja@klas.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 230</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 641 029</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="tim" class="col-md-6">
+                    <h2>Tim <button tooltip-placement="top" tooltip-trigger uib-tooltip="Pridruži se timu" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></button></h2>
+                    <div class="kartica thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <img src="/static/img/portf01.jpg" />
+                        <div class="kartica-info">
+                            <h4>Almira Zulić</h4>
+                            <h5>direktorica izvoza</h5>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> almira.zulic@klas.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 193</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 657 279</li>
+                                <li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> +387 61 476 577</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kartica thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <img src="/static/img/portm03.jpg" />
+                        <div class="kartica-info">
+                            <h4>Muamer Valjevčić</h4>
+                            <h5>menadžer izvoza (asortiman Klas)</h5>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> muamer.valjevcic@klas.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 133</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 657 279</li>
+                                <li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> +387 61 188 097</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="kartica thumbnail">
+                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
+                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        </div>
+                        <img src="/static/img/portm04.jpg" />
+                        <div class="kartica-info">
+                            <h4>Haris Salihbašić</h4>
+                            <h5>menadžer izvoza (asortiman Vispak i Klas)</h5>
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> haris.salihbasic@vispak.ba</li>
+                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 32 738 334</li>
+                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 32 738 143</li>
+                                <li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> +387 61 735 970</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <footer>
+                <p>&copy; 2015 Kontakt+</p>
+            </footer>
+        </div>
+    </div>
+</div>
+{% endblock %}
