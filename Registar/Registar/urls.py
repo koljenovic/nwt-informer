@@ -20,7 +20,7 @@ from app.views import RegisterView
 urlpatterns = [
     url(r'^', include('app.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^korisnici/register/', RegisterView.as_view()),
+    url(r'^korisnici/novi/', RegisterView.as_view()),
     url(r'^korisnici/', include('django.contrib.auth.urls')),
     url(r'^korisnici/', include('registration.backends.default.urls')),
     url(r'^captcha/', include('captcha.urls')),

@@ -1,22 +1,38 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <h1>Create an account</h1>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Create an account</h1>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content %}
     <script type="text/javascript">
-        app.config(function($httpProvider) {
-            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-        })
-        .controller('FormCtrl', function($scope, $http, $window, djangoForm) {
+        app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, djangoForm) {
             $scope.submit = function() {
+                $scope.registration_data.csrfmiddlewaretoken = $cookies.get('csrftoken');
+                $scope.registration_data.captcha_0 = $('#id_captcha_0').val();
+                $scope.registration_data.captcha_1 = $('#id_captcha_1').val();
+                console.log($scope.registration_data);
                 if ($scope.registration_data) {
-                    $http.post(".", $scope.registration_data).success(function(out_data) {
-                        if (!djangoForm.setErrors($scope.registration_form, out_data.errors)) {
-                            // on successful post, redirect onto success page
-                            $window.location.href = out_data.success_url;
+                    $http({
+                        method: 'POST',
+                        url: '.',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for(var p in obj)
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            return str.join("&");
+                        },
+                        data: $scope.registration_data
+                    }).success(function(response) {
+                        if (!djangoForm.setErrors($scope.registration_form, response.errors)) {
+                            // var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(response)[1];
+                            // $('body').html(bodyHtml);
+                            console.log(response);
                         }
                     }).error(function() {
                         console.error('An error occured during submission');
@@ -27,10 +43,19 @@
         });
     </script>
 
-    <form name="{{ form.form_name }}" method="post" action="." novalidate ng-controller="FormCtrl">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button type="button" ng-disabled="{{ form.form_name }}.$invalid" class="btn btn-primary"
-                ng-click="submit()">Submit</button>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form name="{{ form.form_name }}" novalidate ng-controller="RegisterCtrl">
+                {% csrf_token %}
+                {{ form.as_div }}
+                <button type="button" ng-disabled="{{ form.form_name }}.$invalid" class="btn btn-primary" ng-click="submit()">Submit</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <footer>
+        <p>&copy; 2016 Kontakt+</p>
+    </footer>
+</div>
 {% endblock %}

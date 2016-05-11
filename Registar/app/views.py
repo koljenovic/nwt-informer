@@ -3,7 +3,7 @@ from app.models import *
 from app.serializers import *
 from rest_framework import generics
 from django.http import HttpResponse
-from registration.views import RegistrationView
+from registration.backends.default.views import RegistrationView
 from app.forms import *
 from django.views.generic.edit import FormView
 from rest_framework.permissions import AllowAny, DjangoModelPermissions
@@ -18,7 +18,6 @@ def index(request):
 class RegisterView(RegistrationView):
     template_name = 'registration/register.html'
     form_class = RegistrationCaptcha
-
 
 class FirmaFormView(FormView):
     template_name = 'forms/generic.html'

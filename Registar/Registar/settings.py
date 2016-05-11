@@ -52,7 +52,7 @@ REGISTRATION_AUTO_LOGIN = True
 REGISTRATION_FORM = 'app.forms.RegistrationCaptcha'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
     'PAGE_SIZE': 10
 }
 

@@ -1,27 +1,13 @@
 from django.conf.urls import url, include
-from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.generic import TemplateView
 from app.views import *
-
-# router = routers.DefaultRouter()
-# router.register('firma/search', FirmaSearchView, base_name='firma-search')
 
 urlpatterns = [
 
     url(r'^$', index, name='index'),
     url(r'^accounts/profile/$', index),
-    # url(r'^firmaregistar/$', views.FirmaRegistarCreate.as_view()),
-    # url(r'^firmaregistar/(?P<pk>[0-9]+)/$', views.FirmaRegistarDetail.as_view()),
-    # url(r'^userregistar/$', views.UserRegistarCreate.as_view()),
-    # url(r'^userregistar/(?P<pk>[0-9]+)/$', views.UserRegistarDetail.as_view()),
     url(r'^index/$', index, name='index'),
-    # url(r'^adresarfirmastavkaregistar/$', views.AdresarFirmaStavkaRegistarCreate.as_view()),
-    # url(r'^adresarfirmastavkaregistar/(?P<px>[0-9]+)/$', views.AdresarFirmaStavkaRegistarDetail.as_view()),
-    # url(r'^korisnikregistar/$', views.KorisnikRegistarDetail.as_view()),
-    # url(r'^korisnikregistar/(?P<pk>[0-9]+)/$', views.KorisnikRegistarDetail.as_view()),
-    # url(r'^adresarlicestavkaregistar/$', views.AdresarLiceStavkaRegistarDetail.as_view()),
-    # url(r'^adresarlicestavkaregistar/(?P<pk>[0-9]+)/$', views.AdresarLiceStavkaRegistarDetail.as_view()),
     url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
     url(r'^api/grad/$', GradCreate.as_view()),
@@ -38,7 +24,6 @@ urlpatterns = [
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
     url(r'^firma/$', TemplateView.as_view(template_name='parts/firma.html')),
-    # url(r'^search/$', include('haystack.urls')),
     url(r'^search/', FirmaSearchView.as_view()),
 ]
 
