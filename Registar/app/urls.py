@@ -1,7 +1,11 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.generic import TemplateView
 from app.views import *
+
+# router = routers.DefaultRouter()
+# router.register('firma/search', FirmaSearchView, base_name='firma-search')
 
 urlpatterns = [
 
@@ -34,6 +38,8 @@ urlpatterns = [
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
     url(r'^firma/$', TemplateView.as_view(template_name='parts/firma.html')),
+    # url(r'^search/$', include('haystack.urls')),
+    url(r'^search/', FirmaSearchView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

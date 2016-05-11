@@ -1,0 +1,4 @@
+{{ object.alias }}
+{{ object.naziv }}
+{{ object.pdv_broj }}
+{{ object.id_broj }}

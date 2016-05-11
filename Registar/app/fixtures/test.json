@@ -1,0 +1,15 @@
+[
+    {
+        "model": "app.Firma",
+        "pk": 3,
+        "fields": {
+            "alias": "klas",
+            "naziv": "Klas d.d. Sarajevo",
+            "opis": "Klas d.d. Sarajevo, s tradicijom dugom 113 godina (osnovan 1902.), vodeći je bh. proizvođač u mlinsko-pekarskoj djelatnosti, te među vodećim proizvođačima tjestenine, slastičarskih i konditorskih proizvoda u BiH i regionu. Godišnje Klas proizvodi oko 70.000 tona hrane, a upošljava 900 radnika. Klas d.d. Sarajevo, s tradicijom dugom 113 godina (osnovan 1902.), vodeći je bh. proizvođač u mlinsko-pekarskoj djelatnosti, te među vodećim proizvođačima tjestenine u BiH i regionu.",
+            "adresa": "Paromlinska 1",
+            "pdv_broj": "236124450002",
+            "id_broj": "4236124450002",
+            "logo": "logo.png"
+        }
+    }
+]

@@ -19,17 +19,17 @@ class Grad(models.Model):
 
 
 class Firma(models.Model):
-    # @TODO: mozda dodati reputaciju, korisnici ostavljaju star rating
-    alias = models.CharField(max_length=50)
+    # @TODO: mozda dodati reputaciju, korisnici ostavljaju star rating, datum registracije?
+    alias = models.CharField(max_length=50, null=True)
     naziv = models.CharField(max_length=200)
     opis = models.CharField(max_length=500, default='')
     adresa = models.CharField(max_length=200)
     admin_fk = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    grad_fk = models.ForeignKey(Grad, on_delete=models.CASCADE)
+    grad_fk = models.ForeignKey(Grad, on_delete=models.CASCADE, null=True, blank=True)
     pdv_broj = models.CharField(max_length=25)
     id_broj = models.CharField(max_length=25)
-    logo = models.CharField(max_length=250, default='')
-    slika_zaglavlje = models.CharField(max_length=250, default='')
+    logo = models.CharField(max_length=250, default='', null=True, blank=True)
+    slika_zaglavlje = models.CharField(max_length=250, default='', null=True, blank=True)
 
     def clean(self):
         if self.alias is None:

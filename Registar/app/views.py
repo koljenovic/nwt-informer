@@ -7,6 +7,9 @@ from registration.views import RegistrationView
 from app.forms import *
 from django.views.generic.edit import FormView
 from rest_framework.permissions import AllowAny, DjangoModelPermissions
+from drf_haystack.viewsets import HaystackViewSet
+from rest_framework.mixins import ListModelMixin
+from drf_haystack.generics import HaystackGenericAPIView
 
 def index(request):
     return HttpResponse("Korisnik: " + request.user.username)
@@ -55,6 +58,15 @@ class FirmaCreate(generics.ListCreateAPIView):
 class FirmaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Firma.objects.all()
     serializer_class = FirmaSerializer
+
+
+class FirmaSearchView(ListModelMixin, HaystackGenericAPIView):
+    # index_models = [Firma]
+
+    serializer_class = FirmaIndexSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class OsobaCreate(generics.ListCreateAPIView):

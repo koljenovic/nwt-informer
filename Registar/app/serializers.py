@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from app.models import *
-
+from app.search_indexes import *
+from drf_haystack.serializers import HaystackSerializer
 
 class UlogaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,6 +17,11 @@ class FirmaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Firma
 
+
+class FirmaIndexSerializer(HaystackSerializer):
+    class Meta:
+        index_classes = [FirmaIndex]
+        fields = ['text', 'naziv', 'id']
 
 class OsobaSerializer(serializers.ModelSerializer):
     class Meta:

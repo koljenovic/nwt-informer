@@ -59,7 +59,16 @@
                 {id: '@id'},
                 {'query' : {'method': 'GET', isArray: false}});
         }]);
-        app.controller('PageCtrl', function ($scope, Firma, Grad) {
+        app.controller('PageCtrl', function ($scope, $http, Firma, Grad) {
+            $scope.search = function (searchString) {
+                return $http.get('/search/', { params: { 'text__startswith': searchString }})
+                    .then(function(response) {
+                        return response.data.results.slice(0, 5);
+                });
+            }
+            $scope.searchSelect = function (item, model, label, event) {
+                $scope.loadFirma(item.id);
+            }
             $scope.saveChanges = function () {
                 if($scope.editMode) {
                     var push_object = Object.assign({}, $scope.firma);
@@ -71,12 +80,16 @@
                 }
                 $scope.editMode = !$scope.editMode;
             };
-            $scope.firma = Firma.get({id: 2}, function () {
-                $scope.firma.grad_fk = Grad.get({id: $scope.firma.grad_fk});
-                Grad.get({}, function (data) {
-                    $scope.gradovi = data.results;
+            $scope.loadFirma = function (firmaId) {
+                $scope.firma = Firma.get({id: firmaId}, function () {
+                    $scope.firma.grad_fk = Grad.get({id: $scope.firma.grad_fk});
+                    $scope.firma.logo = !$scope.firma.logo ? 'logo.png' : $scope.firma.logo;
+                    Grad.get({}, function (data) {
+                        $scope.gradovi = data.results;
+                    });
                 });
-            });
+            }
+            $scope.loadFirma(2);
         })
         app.controller('Ctrl', function ($scope, $translate) {
             $scope.changeLanguage = function (key) {
@@ -85,7 +98,7 @@
         });
     </script>
 </head>
-<body>
+<body ng-controller="PageCtrl">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -103,13 +116,13 @@
                     <li role="presentation"><a href="#" ng-click="changeLanguage('bs')"><img src="/static/img/bs.png" alt="bosanski" /></a></li>
                 </ul>
                 <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" class="form-control" placeholder="Search">
                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </form>
             </div><!--/.navbar-collapse -->
         </div>
     </nav>
-    <div ng-controller="PageCtrl">
+    <div>
         {% block title %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
