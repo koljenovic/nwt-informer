@@ -6,6 +6,7 @@ from app.views import *
 urlpatterns = [
 
     # url(r'^$', index, name='index'),
+    url(r'^korisnik/$', get_user, name='get_user'),
     url(r'^$', TemplateView.as_view(template_name='pages/index.html')),
     url(r'^accounts/profile/$', index),
     # url(r'^index/$', index, name='index'),

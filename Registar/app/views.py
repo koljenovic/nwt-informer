@@ -10,10 +10,14 @@ from rest_framework.permissions import AllowAny, DjangoModelPermissions
 from drf_haystack.viewsets import HaystackViewSet
 from rest_framework.mixins import ListModelMixin
 from drf_haystack.generics import HaystackGenericAPIView
+import json
 
 def index(request):
-    return HttpResponse("Korisnik: " + request.user.username)
+    return HttpResponse()
 
+
+def get_user(request):
+    return HttpResponse(json.dumps({'korisnik': request.user.username}))
 
 class RegisterView(RegistrationView):
     template_name = 'registration/register.html'
