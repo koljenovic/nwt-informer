@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block ng %}
+    app.config(function($routeProvider){
+        $routeProvider.when('/', {
+            templateUrl: '/part/firma/'
+        }).when('/korisnik/novi', {
+            templateUrl: '/korisnici/novi/',
+            controller: 'RegisterCtrl'
+        }).when('/login', {
+            controller: 'LoginCtrl',
+            templateUrl: '/korisnici/login/'
+        })
+        .otherwise('/');
+    });
+{% endblock %}
+{% block content %}
+<div ng-view></div>
+{% endblock %}
