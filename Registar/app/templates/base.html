@@ -26,78 +26,11 @@
     <script src="/static/js/djng_forms.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.min.js"></script>
-
+    <script src="/static/js/main.js"></script>
     <script type="text/javascript">
-        var app = angular.module('kontakt', ['ngRoute', 'ngResource', 'djng.forms', 'pascalprecht.translate', 'ui.bootstrap', 'ngCookies']);
-        app.config(function ($interpolateProvider, $translateProvider, $resourceProvider, $httpProvider) {
-            $interpolateProvider.startSymbol('{-');
-            $interpolateProvider.endSymbol('-}');
-            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-            $resourceProvider.defaults.stripTrailingSlashes = false;
-            $translateProvider.translations('en', {
-                home: 'Home',
-                about: 'About',
-                contact: 'Contact',
-            });
-            $translateProvider.translations('bs', {
-                home: 'Početna',
-                about: 'O aplikaciji',
-                contact: 'Kontakt',
-            });
-            $translateProvider.preferredLanguage('en');
-        });
-        app.factory('Firma', ['$resource', function($resource) {
-            return $resource('/api/firma/:id/',
-                {id: '@id'},
-                {
-                    'query' : {'method': 'GET', isArray: false},
-                    'update': {'method': 'PUT'}
-                });
-        }]);
-        app.factory('Grad', ['$resource', function($resource) {
-            return $resource('/api/grad/:id/',
-                {id: '@id'},
-                {'query' : {'method': 'GET', isArray: false}});
-        }]);
-        app.controller('PageCtrl', function ($scope, $http, Firma, Grad) {
-            $scope.search = function (searchString) {
-                return $http.get('/search/', { params: { 'text__startswith': searchString }})
-                    .then(function(response) {
-                        return response.data.results.slice(0, 5);
-                });
-            }
-            $scope.searchSelect = function (item, model, label, event) {
-                $scope.loadFirma(item.id);
-            }
-            $scope.saveChanges = function () {
-                if($scope.editMode) {
-                    var push_object = Object.assign({}, $scope.firma);
-                    push_object.grad_fk = $scope.firma.grad_fk.id;
-                    push_object.slika_zaglavlje = '-';
-                    Firma.update(push_object, function (data, respHead) {
-                        // @TODO ovdje treba prikazati poruku o uspjesnom update
-                    });
-                }
-                $scope.editMode = !$scope.editMode;
-            };
-            $scope.loadFirma = function (firmaId) {
-                $scope.firma = Firma.get({id: firmaId}, function () {
-                    $scope.firma.grad_fk = Grad.get({id: $scope.firma.grad_fk});
-                    $scope.firma.logo = !$scope.firma.logo ? 'logo.png' : $scope.firma.logo;
-                    Grad.get({}, function (data) {
-                        $scope.gradovi = data.results;
-                    });
-                });
-            }
-            $scope.loadFirma(2);
-        })
-        app.controller('Ctrl', function ($scope, $translate) {
-            $scope.changeLanguage = function (key) {
-                $translate.use(key);
-            };
-        });
+        {% block ng %}{% endblock %}
     </script>
+    {% block head %}{% endblock %}
 </head>
 <body ng-controller="PageCtrl">
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -109,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="/static/img/kontakt_logo.png" alt="Kontakt+" /></a>
+                <a class="navbar-brand" ng-href="#/"><img src="/static/img/kontakt_logo.png" alt="Kontakt+" /></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul id="langbar" class="nav navbar-nav navbar-right">

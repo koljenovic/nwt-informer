@@ -5,9 +5,10 @@ from app.views import *
 
 urlpatterns = [
 
-    url(r'^$', index, name='index'),
+    # url(r'^$', index, name='index'),
+    url(r'^$', TemplateView.as_view(template_name='pages/index.html')),
     url(r'^accounts/profile/$', index),
-    url(r'^index/$', index, name='index'),
+    # url(r'^index/$', index, name='index'),
     url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
     url(r'^api/grad/$', GradCreate.as_view()),
@@ -23,7 +24,7 @@ urlpatterns = [
     url(r'^api/adresar/$', AdresarCreate.as_view()),
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
-    url(r'^firma/$', TemplateView.as_view(template_name='parts/firma.html')),
+    url(r'^part/firma/$', TemplateView.as_view(template_name='parts/firma.html')),
     url(r'^search/', FirmaSearchView.as_view()),
 ]
 

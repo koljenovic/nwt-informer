@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+
 
 {% block title %}
 <div id="ticker">
@@ -55,7 +55,8 @@
                 <div class="col-md-3">
                     <div id="btn-menu">
                         {% if not user.is_authenticated %}
-                            <button type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Prijavi se</button>
+                            <button type="button" ng-click="go('/login')" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Prijavi se</button>
+                            <button type="button" ng-click="go('/korisnik/novi')" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Registruj se</button>
                         {% endif %}
                         {% if user.is_authenticated %}
                         <button type="button" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> Dodaj u imenik</button>
