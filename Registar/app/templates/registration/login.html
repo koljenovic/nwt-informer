@@ -23,7 +23,7 @@
             {% endif %}
         {% endif %}
 
-        <form name="login-form" novalidate>
+        <form name="login-form" method="POST" novalidate>
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">{{ form.username.label_tag }}</label>

@@ -40,6 +40,8 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
     $scope.go = function (path) {
         $location.path(path);
     };
+
+
     $scope.searchSelect = function (item, model, label, event) {
         $scope.loadFirma(item.id);
     }
@@ -63,7 +65,7 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
             });
         });
     }
-    $scope.loadFirma(2);
+    $scope.loadFirma(3);
 })
 app.run(function($rootScope, $http, $location) {
     $rootScope.isLoggedIn = function () {
@@ -90,12 +92,17 @@ app.controller('LoginCtrl', function($scope, $http, $cookies) {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
-                    for(var p in obj)
+                    for(var p in 
+obj)
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                     return str.join("&");
                 },
                 data: $scope.formData
             }).success(function(response) {
+		$scope.isLoggedIn().then ( function() {
+				$scope.go('/');
+			}		
+		)
                 // var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(response)[1];
                 // $('body').html(bodyHtml);
             }).error(function() {
@@ -104,6 +111,19 @@ app.controller('LoginCtrl', function($scope, $http, $cookies) {
         }
         return false;
     };
+});
+app.controller('LogoutCtrl', function($scope, $http) {
+    $scope.logout = function () {
+          $http({
+	  method: 'GET',
+	  url: '/korisnici/logout/'
+	}).then(function successCallback(response) {
+	    $scope.go('/korisnici/login')
+	  }, function errorCallback(response) {
+	    console.error('An error occured during get');
+	  });
+    };
+
 });
 app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, djangoForm) {
     $scope.submit = function() {

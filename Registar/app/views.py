@@ -11,6 +11,8 @@ from drf_haystack.viewsets import HaystackViewSet
 from rest_framework.mixins import ListModelMixin
 from drf_haystack.generics import HaystackGenericAPIView
 import json
+from django.contrib.auth import logout
+
 
 def index(request):
     return HttpResponse()
