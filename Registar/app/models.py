@@ -8,6 +8,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
 
+from registration.signals import user_activated
+from django.dispatch import receiver
 
 # Preset lista gradova
 class Grad(models.Model):
@@ -56,10 +58,14 @@ class Uloga(models.Model):
         if self.naziv_uloge is None:
             raise ValidationError(_('Naziv uloge je obavezno polje.'))
 
+@receiver(user_activated)
+def osoba_create_callback(sender, **kwargs):
+    user = kwargs.get('user')
+    if not Osoba.objects.get(id=user.id):
+        Osoba.objects.create(id=user.id, user_fk=user, ime='', prezime='').save()
 
 class Osoba(models.Model):
     user_fk = models.ForeignKey(User, on_delete=models.CASCADE)
-    datum_registracije = models.DateTimeField(auto_now_add=True)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     slika = models.CharField(max_length=250)
@@ -70,6 +76,17 @@ class Osoba(models.Model):
         if self.prezime is None:
             raise ValidationError(_('Prezime je obavezno polje.'))
 
+    def get_fields(self):
+        return {
+            'id': self.id,
+            'username': self.user_fk.username,
+            'email': self.user_fk.email,
+            'ime': self.ime,
+            'prezime': self.prezime,
+            'slika': self.slika,
+            'super': self.user_fk.is_superuser,
+            'staff': self.user_fk.is_staff,
+            }
 
 # Preset enumerirane vrijednosti
 class VrstaKontakta(models.Model):

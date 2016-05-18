@@ -18,8 +18,19 @@ def index(request):
     return HttpResponse()
 
 
-def get_user(request):
-    return HttpResponse(json.dumps({'korisnik': request.user.username}))
+def get_user(request, **kwargs):
+    pk = kwargs.get('pk')
+    pk = pk if pk else request.user.id
+    osoba = None
+    user = None
+    try:
+        osoba = Osoba.objects.get(id=pk)
+    except Exception, e:
+        try:
+            user = User.objects.get(id=pk)
+        except Exception, e:
+            pass
+    return HttpResponse(json.dumps({'korisnik': osoba.get_fields() if osoba else { 'username': user.username, 'id': user.id } if user else None }))
 
 class RegisterView(RegistrationView):
     template_name = 'registration/register.html'
@@ -38,6 +49,11 @@ class OsobaFormView(FormView):
 class UlogaCreate(generics.ListCreateAPIView):
     queryset = Uloga.objects.all()
     serializer_class = UlogaSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class UlogaDetail(generics.RetrieveUpdateDestroyAPIView):

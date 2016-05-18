@@ -17,6 +17,21 @@ app.config(function ($interpolateProvider, $translateProvider, $resourceProvider
     });
     $translateProvider.preferredLanguage('en');
 });
+app.factory('User', ['$resource', function($resource) {
+    return $resource('/api/user/:id/',
+        {id: '@id'},
+        {
+            'query' : {'method': 'GET', isArray: false}
+        });
+}]);
+app.factory('Osoba', ['$resource', function($resource) {
+    return $resource('/api/osoba/:id/',
+        {id: '@id'},
+        {
+            'query' : {'method': 'GET', isArray: false},
+            'update': {'method': 'PUT'}
+        });
+}]);
 app.factory('Firma', ['$resource', function($resource) {
     return $resource('/api/firma/:id/',
         {id: '@id'},
@@ -37,11 +52,6 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
                 return response.data.results.slice(0, 5);
         });
     }
-    $scope.go = function (path) {
-        $location.path(path);
-    };
-
-
     $scope.searchSelect = function (item, model, label, event) {
         $scope.loadFirma(item.id);
     }
@@ -68,6 +78,9 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
     $scope.loadFirma(3);
 })
 app.run(function($rootScope, $http, $location) {
+    $rootScope.go = function (path) {
+        $location.path(path);
+    };
     $rootScope.isLoggedIn = function () {
         return $http.get('/korisnik/')
             .then(function(response) {
@@ -82,6 +95,39 @@ app.run(function($rootScope, $http, $location) {
         });
     });
 });
+app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
+    $scope.loadOsoba = function (osobaId) {
+        osobaId = !osobaId ? $scope.korisnik.id : osobaId;
+        $scope.user = {}
+        $scope.osoba = {'id': osobaId, 'ime': 'ime', 'prezime': 'prezime', 'slika': 'profile.png', 'mock': true};
+        osoba = Osoba.get({id: osobaId}, function () {
+            $scope.osoba = osoba ? osoba : $scope.osoba;
+            $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
+        });
+        user = User.get({id: osobaId}, function () {
+            $scope.user = user ? user : $scope.user;
+        });
+    };
+    $scope.saveKontakt = function () {
+        $scope.noviKontaktEdit = !$scope.noviKontaktEdit;
+    }
+    $scope.saveChanges = function () {
+        if($scope.editMode) {
+            var push_object = Object.assign({}, $scope.osoba);
+            if ($scope.osoba.mock) {
+                Osoba.save(push_object, function (data, respHead) {
+                    // @TODO ovdje treba prikazati poruku o uspjesnom update
+                });
+            } else {
+                Osoba.update(push_object, function (data, respHead) {
+                    // @TODO ovdje treba prikazati poruku o uspjesnom update
+                });
+            }
+        }
+        $scope.editMode = !$scope.editMode;
+    };
+    $scope.loadOsoba($routeParams['osobaId']);
+});
 app.controller('LoginCtrl', function($scope, $http, $cookies) {
     $scope.submit = function() {
         $scope.formData.csrfmiddlewaretoken = $cookies.get('csrftoken');
@@ -92,17 +138,17 @@ app.controller('LoginCtrl', function($scope, $http, $cookies) {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
-                    for(var p in 
+                    for(var p in
 obj)
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                     return str.join("&");
                 },
                 data: $scope.formData
             }).success(function(response) {
-		$scope.isLoggedIn().then ( function() {
-				$scope.go('/');
-			}		
-		)
+        $scope.isLoggedIn().then ( function() {
+                $scope.go('/');
+            }
+        )
                 // var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(response)[1];
                 // $('body').html(bodyHtml);
             }).error(function() {
@@ -114,16 +160,15 @@ obj)
 });
 app.controller('LogoutCtrl', function($scope, $http) {
     $scope.logout = function () {
-          $http({
-	  method: 'GET',
-	  url: '/korisnici/logout/'
-	}).then(function successCallback(response) {
-	    $scope.go('/korisnici/login')
-	  }, function errorCallback(response) {
-	    console.error('An error occured during get');
-	  });
+        $http({
+            method: 'GET',
+            url: '/korisnici/logout/'
+        }).then(function successCallback(response) {
+            $scope.go('/korisnici/login')
+        }, function errorCallback(response) {
+            console.error('An error occured during get');
+        });
     };
-
 });
 app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, djangoForm) {
     $scope.submit = function() {
@@ -147,8 +192,6 @@ app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, django
                 if (!djangoForm.setErrors($scope.registration_form, response.errors)) {
                     // var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(response)[1];
                     // $('body').html(bodyHtml);
-                    // console.log(response);
-                } else {
                     $scope.go('/');
                 }
             }).error(function() {

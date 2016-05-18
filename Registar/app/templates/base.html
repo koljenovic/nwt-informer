@@ -45,6 +45,9 @@
                 <a class="navbar-brand" ng-href="#/"><img src="/static/img/kontakt_logo.png" alt="Kontakt+" /></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-form navbar-right">
+                    <button type="button" class="btn btn-primary" ng-click="go('/profil')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>
+                </div>
                 <ul id="langbar" class="nav navbar-nav navbar-right">
                     <li role="presentation"><a href="#" ng-click="changeLanguage('en')"><img src="/static/img/en.png" alt="english" /></a></li>
                     <li role="presentation"><a href="#" ng-click="changeLanguage('bs')"><img src="/static/img/bs.png" alt="bosanski" /></a></li>

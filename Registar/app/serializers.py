@@ -18,6 +18,12 @@ class FirmaSerializer(serializers.ModelSerializer):
         model = Firma
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
+
 class FirmaIndexSerializer(HaystackSerializer):
     class Meta:
         index_classes = [FirmaIndex]

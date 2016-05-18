@@ -43,7 +43,7 @@ body {
 #langbar a {
     padding: 9px 5px;
 }
-.kartica {
+.kartica, #profil-head {
     min-height: 160px;
     margin-bottom: 10px;
     overflow: auto;
@@ -118,4 +118,29 @@ body {
 #logo-edit {
     opacity: 0.5;
     filter: alpha(opacity=50);
+}
+#profil-kontakt .list-group-item {
+    font-size: large;
+}
+#profil-kontakt .list-group-item span {
+    margin: 0 25px;
+}
+.btn span {
+    margin: 0!important;
+}
+#profil-head {
+    margin-top: 35px;
+}
+.panel-heading h2 {
+    font-size: x-large;
+}
+.panel-heading button {
+    float: right;
+}
+#ime-edit, #prezime-edit {
+    font-family: inherit!important;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px 25px 0 -1px;
+    padding: 0;
 }

@@ -10,6 +10,9 @@
         }).when('/login', {
             controller: 'LoginCtrl',
             templateUrl: '/korisnici/login/'
+        }).when('/profil/:osobaId?', {
+            templateUrl: '/part/profil/',
+            controller: 'ProfilCtrl'
         })
         .otherwise('/');
     });

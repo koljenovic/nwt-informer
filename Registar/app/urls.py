@@ -6,12 +6,13 @@ from app.views import *
 urlpatterns = [
 
     # url(r'^$', index, name='index'),
-    url(r'^korisnik/$', get_user, name='get_user'),
+    url(r'^korisnik/((?P<pk>[0-9]+)/)?$', get_user, name='get_user'),
     url(r'^$', TemplateView.as_view(template_name='pages/index.html')),
     url(r'^accounts/profile/$', index),
     # url(r'^index/$', index, name='index'),
     url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
+    url(r'^api/user/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
     url(r'^api/grad/$', GradCreate.as_view()),
     url(r'^api/grad/(?P<pk>[0-9]+)/$', GradDetail.as_view()),
     url(r'^api/firma/$', FirmaCreate.as_view()),
@@ -26,6 +27,7 @@ urlpatterns = [
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
     url(r'^part/firma/$', TemplateView.as_view(template_name='parts/firma.html')),
+    url(r'^part/profil/$', TemplateView.as_view(template_name='parts/profil.html')),
     url(r'^search/', FirmaSearchView.as_view()),
 ]
 
