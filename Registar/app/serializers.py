@@ -42,6 +42,7 @@ class VrstaKontaktaSerializer(serializers.ModelSerializer):
 class KontaktSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kontakt
+        fields = ['id', 'kontakt', 'firma_fk', 'osoba_fk', 'vrsta_fk', 'naziv']
 
 
 class AdresarSerializer(serializers.ModelSerializer):

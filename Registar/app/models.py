@@ -98,10 +98,20 @@ class Kontakt(models.Model):
     firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
     kontakt = models.CharField(max_length=250)
+    naziv = models.CharField(max_length=100)
+    
+    def __str__(self):
+        #return '%s %s %s %s %s' % (self.id, self.kontakt, self.firma_fk.id, self.vrsta_fk.vrsta_kontakta, self.naziv) 
+        return self.naziv
+        
 
     def clean(self):
         if self.kontakt is None:
             raise ValidationError(_('Kontakt je obavezno polje.'))
+        if self.naziv is None:
+            raise ValidationError(_('Naziv je obavezno polje.'))
+        if self.vrsta_fk is None:
+            raise ValidationError(_('Vrsta kontakta je obavezno polje.'))
 
 
 class Adresar(models.Model):
