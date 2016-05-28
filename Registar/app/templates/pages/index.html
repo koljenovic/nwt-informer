@@ -13,7 +13,11 @@
         }).when('/profil/:osobaId?', {
             templateUrl: '/part/profil/',
             controller: 'ProfilCtrl'
+        }).when('/firma/:firmaId?', {
+            templateUrl: '/part/firma/',
+            controller: 'FirmaCtrl'
         })
+
         .otherwise('/');
     });
 {% endblock %}

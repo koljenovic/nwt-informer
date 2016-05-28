@@ -6,13 +6,15 @@ from django.http import HttpResponse
 from registration.backends.default.views import RegistrationView
 from app.forms import *
 from django.views.generic.edit import FormView
-from rest_framework.permissions import AllowAny, DjangoModelPermissions
+from rest_framework.permissions import AllowAny, DjangoModelPermissions, IsAuthenticatedOrReadOnly
 from drf_haystack.viewsets import HaystackViewSet
 from rest_framework.mixins import ListModelMixin
 from drf_haystack.generics import HaystackGenericAPIView
 import json
 from django.contrib.auth import logout
-
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.parsers import FileUploadParser
 
 def index(request):
     return HttpResponse()
@@ -176,3 +178,20 @@ class AdresarDetail(generics.RetrieveUpdateDestroyAPIView):
     # class AdresarLiceStavkaRegistarDetail(generics.RetrieveUpdateDestroyAPIView):
     #     queryset = AdresarLiceStavkaRegistar.objects.all()
     #     serializer_class = AdresarLiceStavkaRegistarSerializer
+
+
+
+class SlikaView(APIView):
+    permission_classes = (AllowAny,)
+    def post(self, request, format=None):
+        serializer = SlikaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return HttpResponse(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return HttpResponse(serializer.errors, status=400)
+
+def get_slika(request, **kwargs):
+    pk = kwargs.get('pk')
+    slika = Slika.objects.get(id=pk)
+    return HttpResponse(slika)

@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^part/firma/$', TemplateView.as_view(template_name='parts/firma.html')),
     url(r'^part/profil/$', TemplateView.as_view(template_name='parts/profil.html')),
     url(r'^search/', FirmaSearchView.as_view()),
+    url(r'^api/photo/$', SlikaView.as_view()),
+    url(r'^slika/((?P<pk>[0-9]+)/)?$', get_slika),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

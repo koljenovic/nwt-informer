@@ -1,4 +1,4 @@
-var app = angular.module('kontakt', ['ngRoute', 'ngResource', 'djng.forms', 'pascalprecht.translate', 'ui.bootstrap', 'ngCookies', 'ngAnimate']);
+var app = angular.module('kontakt', ['ngRoute', 'ngFileUpload','ngResource', 'djng.forms', 'pascalprecht.translate', 'ui.bootstrap', 'ngCookies', 'ngAnimate']);
 app.config(function ($interpolateProvider, $translateProvider, $resourceProvider, $httpProvider) {
     $interpolateProvider.startSymbol('{-');
     $interpolateProvider.endSymbol('-}');
@@ -76,7 +76,7 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
         });
     }
     $scope.loadFirma(3);
-})
+});
 app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
         $location.path(path);
@@ -99,10 +99,10 @@ app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
     $scope.loadOsoba = function (osobaId) {
         osobaId = !osobaId ? $scope.korisnik.id : osobaId;
         $scope.user = {}
-        $scope.osoba = {'id': osobaId, 'ime': 'ime', 'prezime': 'prezime', 'slika': 'profile.png', 'mock': true};
+        $scope.osoba = {'id': osobaId, 'ime': 'ime', 'prezime': 'prezime', 'mock': true};
         osoba = Osoba.get({id: osobaId}, function () {
             $scope.osoba = osoba ? osoba : $scope.osoba;
-            $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
+//            $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
         });
         user = User.get({id: osobaId}, function () {
             $scope.user = user ? user : $scope.user;
@@ -206,3 +206,59 @@ app.controller('Ctrl', function ($scope, $translate) {
         $translate.use(key);
     };
 });
+
+app.controller('FirmaCtrl', function ($timeout, $scope, $routeParams, Upload, Firma, Grad) {
+    
+       $scope.uploadFiles = function(file, errFiles) 
+       {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) 
+            {
+                file.upload = Upload.upload(
+                {
+                    url: '/api/photo/',
+                    headers: {'enctype' : 'multipart/form-data'},
+                    data: {'osoba_fk' : 1, 'firma_fk': $routeParams['firmaId'], 'slika': file}
+                });
+
+                file.upload.then(function (response) 
+                {
+                    $timeout(function () {
+                        file.result = response.data;
+                });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            }   
+        }
+    
+    $scope.saveChanges = function () {
+        if($scope.editMode) {
+            var push_object = Object.assign({}, $scope.firma);
+            push_object.grad_fk = $scope.firma.grad_fk.id;
+            push_object.slika_zaglavlje = '-';
+            Firma.update(push_object, function (data, respHead) {
+                // @TODO ovdje treba prikazati poruku o uspjesnom update
+            });
+        }
+        $scope.editMode = !$scope.editMode;
+    };
+    
+    $scope.loadFirma = function (firmaId) {
+        $scope.firma = Firma.get({id: firmaId}, function () {
+            $scope.firma.grad_fk = Grad.get({id: $scope.firma.grad_fk});
+            $scope.firma.logo = !$scope.firma.logo ? 'logo.png' : $scope.firma.logo;
+            Grad.get({}, function (data) {
+                $scope.gradovi = data.results;
+            });
+        });
+    }
+    
+    console.error($routeParams['firmaId']);    
+    $scope.loadFirma($routeParams['firmaId']); 
+});
+

@@ -144,3 +144,11 @@ body {
     margin: 15px 25px 0 -1px;
     padding: 0;
 }
+
+.thumb {
+    width: 24px;
+    height: 24px;
+    float: none;
+    position: relative;
+    top: 7px;
+} 

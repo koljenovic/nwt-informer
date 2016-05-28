@@ -48,6 +48,10 @@ class AdresarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adresar
 
+class SlikaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Slika
+        fields = ('osoba_fk', 'firma_fk', 'slika')
 # class FirmaRegistarSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = FirmaRegistar
