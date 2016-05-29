@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
     url(r'^api/user/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
+    url(r'^api/user/(?P<username>[a-zA-Z]+)/$', UserDetail_ByUsername.as_view()),
     url(r'^api/grad/$', GradCreate.as_view()),
     url(r'^api/grad/(?P<pk>[0-9]+)/$', GradDetail.as_view()),
     url(r'^api/firma/$', FirmaCreate.as_view()),

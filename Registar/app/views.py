@@ -56,6 +56,12 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class UserDetail_ByUsername(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    lookup_field = 'username'
+    serializer_class = UserSerializer
+
+
 class UlogaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Uloga.objects.all()
     serializer_class = UlogaSerializer

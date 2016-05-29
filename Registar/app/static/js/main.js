@@ -100,12 +100,12 @@ app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
         osobaId = !osobaId ? $scope.korisnik.id : osobaId;
         $scope.user = {}
         $scope.osoba = {'id': osobaId, 'ime': 'ime', 'prezime': 'prezime', 'slika': 'profile.png', 'mock': true};
-        osoba = Osoba.get({id: osobaId}, function () {
-            $scope.osoba = osoba ? osoba : $scope.osoba;
-            $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
-        });
         user = User.get({id: osobaId}, function () {
             $scope.user = user ? user : $scope.user;
+            osoba = Osoba.get({id: $scope.user.id}, function () {
+                $scope.osoba = osoba ? osoba : $scope.osoba;
+                $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
+            });
         });
     };
     $scope.saveKontakt = function () {
