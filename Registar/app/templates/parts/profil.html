@@ -9,7 +9,8 @@
                     <!-- <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> -->
                     <button type="button" ng-show="korisnik" ng-click="saveChanges()" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
                 </div>
-                <img src="/static/img/profile.png" />
+                <img ng-hide="editMode" class="slika" ng-src="{- osoba.slika -}" />
+                <button ng-show="editMode" type="file" id="profile-button" ngf-select="selectSlika($file, $invalidFiles)" class="btn btn-default" accept="image/*" ngf-max-height="10000" ngf-max-size="1MB"><img id="slika-edit" class="slika" ng-src="{- osoba.slika -}" /></button>
                 <h3>
                     <strong ng-hide="editMode">{- osoba.ime -} {- osoba.prezime -}</strong>
                     <input type="text" ng-model="osoba.ime" ng-show="editMode" class="form-control" id="ime-edit">

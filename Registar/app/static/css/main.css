@@ -48,12 +48,12 @@ body {
     margin-bottom: 10px;
     overflow: auto;
 }
-.kartica img {
+.slika, .kartica img {
     height: 150px;
     width: 150px;
     float: left;
     border-radius: 6px;
-    margin: 0 25px 0 000;
+    margin: 0 25px 0 0;
 }
 .kartica h4 {
     color: #991818;
@@ -115,7 +115,7 @@ body {
     float: right;
     clear: both;
 }
-#logo-edit {
+#logo-edit, #slika-edit {
     opacity: 0.5;
     filter: alpha(opacity=50);
 }
@@ -148,6 +148,22 @@ body {
 ul[id^="typeahead-"] {
     width: 100%;
     overflow-x: hidden;
+}
+
+#logo-button {
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+}
+
+#profile-button {
+    height: 150px;
+    width: 150px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 /* Kontakt Search page START */

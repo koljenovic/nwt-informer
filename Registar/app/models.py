@@ -30,8 +30,7 @@ class Firma(models.Model):
     grad_fk = models.ForeignKey(Grad, on_delete=models.CASCADE, null=True, blank=True)
     pdv_broj = models.CharField(max_length=25)
     id_broj = models.CharField(max_length=25)
-    logo = models.CharField(max_length=250, default='', null=True, blank=True)
-    slika_zaglavlje = models.CharField(max_length=250, default='', null=True, blank=True)
+    logo = models.ImageField(max_length=250, default='', null=True, blank=True, upload_to='logo/')
 
     def clean(self):
         if self.alias is None:
@@ -68,7 +67,7 @@ class Osoba(models.Model):
     user_fk = models.ForeignKey(User, on_delete=models.CASCADE)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
-    slika = models.CharField(max_length=250)
+    slika = models.ImageField(max_length=250, default='', null=True, blank=True, upload_to='slika/')
 
     def clean(self):
         if self.ime is None:
@@ -83,7 +82,7 @@ class Osoba(models.Model):
             'email': self.user_fk.email,
             'ime': self.ime,
             'prezime': self.prezime,
-            'slika': self.slika,
+            # 'slika': self.slika.path,
             'super': self.user_fk.is_superuser,
             'staff': self.user_fk.is_staff,
             }
@@ -107,76 +106,3 @@ class Kontakt(models.Model):
 class Adresar(models.Model):
     osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE)
     kontakt_fk = models.ForeignKey(Kontakt, on_delete=models.CASCADE)
-
-# class FirmaRegistar(models.Model):
-#     pdv_broj = models.CharField(max_length=200)
-#     id_broj = models.CharField(max_length=200)
-#     telefon = models.CharField(validators=[phone_regex])
-#     adresa = models.CharField(max_length=200)
-#     naziv = models.CharField(max_length=200)
-#     email = models.CharField(max_length=200)
-#     fax = models.CharField(max_length=200)
-#     def clean(self):
-#         #ovdje treba dodati regex validatore
-#         if self.fax is None:
-#             raise ValidationError(_('Korisnik mora imati pdv broj!!!'))
-#         if self.naziv is None:
-#             raise ValidationError(_('Korisnik mora imati pdv broj!!!'))
-#         if self.email is not None and ValidateEmail(self.email):
-#             raise ValidationError(_('Neispravan email!!!'))
-
-# class KorisnikRegistar(models.Model):
-#     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-#     korisnikregistar_fk = models.ForeignKey(UserRegistar, on_delete=models.CASCADE)
-#     telefon = models.CharField(validators=[phone_regex])
-#     prezime = models.CharField(max_length=200)
-#     adresa = models.CharField(max_length=200)
-#     email = models.CharField(max_length=200)
-#     ime = models.CharField(max_length=200)
-#     def clean(self):
-#         #ovdje treba dodati regex validatore
-#         if self.adresa is None:
-#             raise ValidationError(_('Korisnik mora imati adresu!!!'))
-#         if self.ime is None:
-#             raise ValidationError(_('Korisnik mora imati ime!!!'))
-#         if self.email is not None and ValidateEmail(self.email):
-#             raise ValidationError(_('Neispravan email!!!'))
-
-# class AdresarLiceStavkaRegistar(models.Model):
-#     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-#     korisnikregistar_fk = models.ForeignKey(UserRegistar, on_delete=models.CASCADE)
-#     datum_kreiranja = models.DateTimeField('datum kreiranja')
-#     dodatne_informacije = models.CharField(max_length=500)
-#     telefon = models.CharField(validators=[phone_regex], blank=True)
-#     prezime = models.CharField(max_length=200)
-#     adresa = models.CharField(max_length=200)
-#     email = models.CharField(max_length=200)
-#     ime = models.CharField(max_length=200)
-#     def clean(self):
-#         #ovdje treba dodati regex validatore
-#         if self.ime is None:
-#             raise ValidationError(_('Lice mora imati ime!!!'))
-#         if self.prezime is None:
-#             raise ValidationError(_('Lice mora imati prezime!!!'))
-#         if self.telefon is None:
-#             raise ValidationError(_('Lice mora imati telefon!!!'))
-
-# class AdresarFirmaStavkaRegistar(models.Model):
-#     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-#     korisnikregistar_fk = models.ForeignKey(UserRegistar, on_delete=models.CASCADE)
-#     datum_kreiranja = models.DateTimeField('datum kreiranja')
-#     dodatne_informacije = models.CharField(max_length=500)
-#     telefon = models.CharField(validators=[phone_regex])
-#     adresa = models.CharField(max_length=200)
-#     naziv = models.CharField(max_length=200)
-#     email = models.CharField(max_length=200)
-#     def clean(self):
-#         #ovdje treba dodati regex validatore
-#         if self.naziv is None:
-#             raise ValidationError(_('Firma mora imati naziv!!!'))
-#         if self.email is None:
-#             raise ValidationError(_('Firma mora imati email!!!'))
-#         if self.telefon is None:
-#             raise ValidationError(_('Firma mora imati telefon!!!'))
-#         if self.email is not None and ValidateEmail(self.email):
-#             raise ValidationError(_('Neispravan email!!!'))

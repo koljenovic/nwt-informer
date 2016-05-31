@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from app.views import RegisterView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^', include('app.urls')),
@@ -24,4 +25,7 @@ urlpatterns = [
     url(r'^korisnici/', include('django.contrib.auth.urls')),
     url(r'^korisnici/', include('registration.backends.default.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
 ]

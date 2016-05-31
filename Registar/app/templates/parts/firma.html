@@ -31,10 +31,9 @@
         <div class="row">
             <div class="col-md-3">
                 <a href="{- firma.url -}/">
-                    <img id="logo" ng-hide="editMode" src="/static/img/{- firma.logo -}" />
-                    <img id="logo-edit" ng-show="editMode" src="/static/img/{- firma.logo -}" />
+                    <img id="logo" ng-hide="editMode" ng-src="{- firma.logo -}" />
                 </a>
-
+                <button ng-show="editMode" type="file" id="logo-button" ngf-select="selectLogo($file, $invalidFiles)" class="btn btn-default" accept="image/*" ngf-max-height="10000" ngf-max-size="1MB"><img id="logo-edit" ng-src="{- firma.logo -}" /></button>
             </div>
             <div class="col-md-9">
                 <textarea id="opis-edit" ng-show="editMode" ng-model="firma.opis" class="form-control" rows="6">{- firma.opis -}</textarea>

@@ -47,26 +47,3 @@ class KontaktSerializer(serializers.ModelSerializer):
 class AdresarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adresar
-
-# class FirmaRegistarSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FirmaRegistar
-
-# class UserRegistarSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserRegistar
-
-# #Haris
-# class AdresarFirmaStavkaRegistarSerializer(serializers.ModelSerializer):
-# 	class Meta:
-# 		model = AdresarFirmaStavkaRegistar;
-
-# #Adna
-# class KorisnikRegistarSerializer(serializers.ModelSerializer):
-# 	class Meta:
-# 		model = KorisnikRegistar;
-
-
-# class AdresarLiceStavkaRegistarSerializer(serializers.ModelSerializer):
-# 	class Meta:
-# 		model = AdresarLiceStavkaRegistar;

@@ -1,4 +1,4 @@
-var app = angular.module('kontakt', ['ngRoute', 'ngResource', 'djng.forms', 'pascalprecht.translate', 'ui.bootstrap', 'ngCookies', 'ngAnimate']);
+var app = angular.module('kontakt', ['ngRoute', 'ngResource', 'djng.forms', 'pascalprecht.translate', 'ui.bootstrap', 'ngCookies', 'ngAnimate', 'ngFileUpload']);
 app.config(function ($interpolateProvider, $translateProvider, $resourceProvider, $httpProvider) {
     $interpolateProvider.startSymbol('{-');
     $interpolateProvider.endSymbol('-}');
@@ -59,7 +59,7 @@ app.controller('SearchCtrl', function ($scope, $http) {
         $scope.firmaSearch($scope.firmaSearchString, $scope.currentPage);
     }
 });
-app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Firma, Grad) {
+app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $timeout, Upload, Firma, Grad) {
     $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
@@ -78,6 +78,23 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Fir
             var push_object = Object.assign({}, $scope.firma);
             push_object.grad_fk = $scope.firma.grad_fk.id;
             push_object.slika_zaglavlje = '-';
+            if ($scope.logoFile) {
+                push_object.logo = $scope.logoFile;
+                Upload.upload({
+                    url: '/api/firma/' + push_object.id + '/',
+                    data: { 
+                        id_broj: push_object.id_broj,
+                        naziv: push_object.naziv,
+                        pdv_broj: push_object.pdv_broj,
+                        adresa: push_object.adresa,
+                        logo: $scope.logoFile
+                    },
+                    method: 'PUT'
+                }).then(function (response) {
+                    // @TODO ovdje treba prikazati poruku o uspjesnom update
+                });
+            }
+            delete push_object.logo;
             Firma.update(push_object, function (data, respHead) {
                 // @TODO ovdje treba prikazati poruku o uspjesnom update
             });
@@ -87,7 +104,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Fir
     $scope.loadFirma = function (firmaId) {
         $scope.firma = Firma.get({id: firmaId}, function () {
             $scope.firma.grad_fk = Grad.get({id: $scope.firma.grad_fk});
-            $scope.firma.logo = !$scope.firma.logo ? 'logo.png' : $scope.firma.logo;
+            $scope.firma.logo = !$scope.firma.logo ? '/media/logo.png' : $scope.firma.logo;
             Grad.get({}, function (data) {
                 $scope.gradovi = data.results;
             });
@@ -97,9 +114,13 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Fir
         $scope.firma.admin_fk = $scope.korisnik.id;
         var push_object = Object.assign({}, $scope.firma);
         push_object.grad_fk = $scope.firma.grad_fk.id;
+        delete push_object.logo;
         Firma.update(push_object, function (data, respHead) {
             // @TODO ovdje treba prikazati poruku o uspjesnom update
         });
+    }
+    $scope.selectLogo = function (file, errFiles) {
+        $scope.logoFile = file;
     }
     $scope.loadFirma($routeParams['firmaId']);
 })
@@ -107,13 +128,28 @@ app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
         $location.path(path);
     };
+    $rootScope.parseUrl = function (url) {
+        $scope.parser = document.createElement('a');
+        $scope.parser.href = url;
+        return $scope.parser;
+    }
     $rootScope.location = $location;
-    $rootScope.isLoggedIn = function () {
+    $rootScope.isLoggedIn = function (callback=null, data=null) {
         return $http.get('/korisnik/')
             .then(function(response) {
                 $rootScope.korisnik = response.data.korisnik;
+                if (callback) {
+                    data ? callback(data) : callback();
+                };
         });
     };
+    $rootScope.dispatcher = [];
+    $rootScope.loop = function () {
+        for (var i = 0; i < $rootScope.dispatcher.length; i++) {
+            $rootScope.dispatcher[i]();
+        };
+        $rootScope.dispatcher = [];
+    }
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         $rootScope.isLoggedIn().then(function () {
             if ($rootScope.korisnik && ($location.path() == '/korisnik/novi' || $location.path() == '/login')) {
@@ -121,17 +157,17 @@ app.run(function($rootScope, $http, $location) {
             }
         });
     });
+    $rootScope.isLoggedIn();
 });
-app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
+app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload) {
     $scope.loadOsoba = function (osobaId) {
         osobaId = !osobaId ? $scope.korisnik.id : osobaId;
         $scope.user = {}
-        $scope.osoba = {'id': osobaId, 'ime': 'ime', 'prezime': 'prezime', 'slika': 'profile.png', 'mock': true};
         user = User.get({id: osobaId}, function () {
             $scope.user = user ? user : $scope.user;
             osoba = Osoba.get({id: $scope.user.id}, function () {
                 $scope.osoba = osoba ? osoba : $scope.osoba;
-                $scope.osoba.slika = !$scope.osoba.slika ? 'profile.png' : $scope.osoba.slika;
+                $scope.osoba.slika = !$scope.osoba.slika ? '/media/profile.png' : $scope.osoba.slika;
             });
         });
     };
@@ -141,18 +177,30 @@ app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
     $scope.saveChanges = function () {
         if($scope.editMode) {
             var push_object = Object.assign({}, $scope.osoba);
-            if ($scope.osoba.mock) {
-                Osoba.save(push_object, function (data, respHead) {
-                    // @TODO ovdje treba prikazati poruku o uspjesnom update
-                });
-            } else {
-                Osoba.update(push_object, function (data, respHead) {
-                    // @TODO ovdje treba prikazati poruku o uspjesnom update
-                });
-            }
+            delete push_object.slika;
+            Osoba.update(push_object, function (data, respHead) {
+               if ($scope.slikaFile) {
+                    push_object.slika = $scope.slikaFile;
+                    Upload.upload({
+                        url: '/api/osoba/' + push_object.id + '/',
+                        data: { 
+                            ime: push_object.ime,
+                            prezime: push_object.prezime,
+                            slika: $scope.slikaFile,
+                            user_fk: push_object.user_fk
+                        },
+                        method: 'PUT'
+                    }).then(function (response) {
+                        // @TODO ovdje treba prikazati poruku o uspjesnom update
+                    });
+                }
+            });
         }
         $scope.editMode = !$scope.editMode;
     };
+    $scope.selectSlika = function (file, errFiles) {
+        $scope.slikaFile = file;
+    }
     $scope.loadOsoba($routeParams['osobaId']);
 });
 app.controller('LoginCtrl', function($scope, $http, $cookies) {
