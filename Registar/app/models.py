@@ -93,10 +93,11 @@ class VrstaKontakta(models.Model):
 
 
 class Kontakt(models.Model):
-    osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE)
     firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
     kontakt = models.CharField(max_length=250)
+    kategorija = models.IntegerField(null=True, blank=True)
+    naziv = models.CharField(max_length=250, null=True, blank=True)
 
     def clean(self):
         if self.kontakt is None:

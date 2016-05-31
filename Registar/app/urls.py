@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^api/vrstakontakta/(?P<pk>[0-9]+)/$', VrstaKontaktaDetail.as_view()),
     url(r'^api/kontakt/$', KontaktCreate.as_view()),
     url(r'^api/kontakt/(?P<pk>[0-9]+)/$', KontaktDetail.as_view()),
+    #url(r'^api/kontakt/firma/(?P<firma_fk>[0-9]+)/$', KontaktDetailFirma.as_view()),
     url(r'^api/adresar/$', AdresarCreate.as_view()),
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),

@@ -60,6 +60,27 @@ app.controller('SearchCtrl', function ($scope, $http) {
     }
 });
 app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $timeout, Upload, Firma, Grad) {
+    $.ajax({
+        url: '/api/kontakt/',
+        method: 'GET'
+    }).then(function(data) {
+        $scope.dummy = data.results;
+        $scope.$apply(function() {
+            $scope.dummy.push(data.results);
+            $scope.quantity = $scope.dummy.length - 1;
+
+            $scope.kontakti = [];
+            $scope.kategorije = [];
+            for (var i=0; i<$scope.quantity; i++) {
+                if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
+                    $scope.kontakti.push($scope.dummy[i]);
+                    if($scope.kategorije.indexOf($scope.dummy[i].naziv) == -1)
+                        $scope.kategorije.push($scope.dummy[i].naziv);
+                }
+            }
+
+        });
+    });
     $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
@@ -82,7 +103,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $ti
                 push_object.logo = $scope.logoFile;
                 Upload.upload({
                     url: '/api/firma/' + push_object.id + '/',
-                    data: { 
+                    data: {
                         id_broj: push_object.id_broj,
                         naziv: push_object.naziv,
                         pdv_broj: push_object.pdv_broj,
@@ -110,6 +131,8 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $ti
             });
         });
     }
+
+
     $scope.claimFirma = function () {
         $scope.firma.admin_fk = $scope.korisnik.id;
         var push_object = Object.assign({}, $scope.firma);
@@ -183,7 +206,7 @@ app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload
                     push_object.slika = $scope.slikaFile;
                     Upload.upload({
                         url: '/api/osoba/' + push_object.id + '/',
-                        data: { 
+                        data: {
                             ime: push_object.ime,
                             prezime: push_object.prezime,
                             slika: $scope.slikaFile,
@@ -213,19 +236,16 @@ app.controller('LoginCtrl', function($scope, $http, $cookies) {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
-                    for(var p in
-obj)
+                    for (var p in obj) {
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
                     return str.join("&");
                 },
                 data: $scope.formData
             }).success(function(response) {
-        $scope.isLoggedIn().then ( function() {
-                $scope.go('/');
-            }
-        )
-                // var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(response)[1];
-                // $('body').html(bodyHtml);
+                $scope.isLoggedIn().then(function () {
+                    $scope.go('/');
+                });
             }).error(function() {
                 console.error('An error occured during submission');
             });
