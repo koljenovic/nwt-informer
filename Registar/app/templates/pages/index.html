@@ -3,7 +3,8 @@
 {% block ng %}
     app.config(function($routeProvider){
         $routeProvider.when('/', {
-            templateUrl: '/part/firma/'
+            templateUrl: '/part/search/',
+            controller: 'SearchCtrl'
         }).when('/korisnik/novi', {
             templateUrl: '/korisnici/novi/',
             controller: 'RegisterCtrl'
@@ -13,6 +14,9 @@
         }).when('/profil/:osobaId?', {
             templateUrl: '/part/profil/',
             controller: 'ProfilCtrl'
+        }).when('/firma/:firmaId', {
+            templateUrl: '/part/firma/',
+            controller: 'PageCtrl'
         })
         .otherwise('/');
     });

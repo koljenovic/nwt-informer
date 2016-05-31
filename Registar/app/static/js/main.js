@@ -45,11 +45,29 @@ app.factory('Grad', ['$resource', function($resource) {
         {id: '@id'},
         {'query' : {'method': 'GET', isArray: false}});
 }]);
-app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
-    $scope.search = function (searchString) {
+app.controller('SearchCtrl', function ($scope, $http) {
+    $scope.legalese = false;
+    $scope.firmaSearch = function (searchString, page=1) {
+        $scope.currentPage = page;
+        $scope.firmaSearchString = searchString;
+        return $http.get('/search/', { params: { 'text__startswith': searchString, 'page': page }})
+            .then(function(response) {
+                $scope.searchData = response.data;
+        });
+    }
+    $scope.loadPage = function () {
+        $scope.firmaSearch($scope.firmaSearchString, $scope.currentPage);
+    }
+});
+app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Firma, Grad) {
+    $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
-                return response.data.results.slice(0, 5);
+                if (slice_size > 0) {
+                    return response.data.results.slice(0, slice_size);
+                } else {
+                    return response.data;
+                }
         });
     }
     $scope.searchSelect = function (item, model, label, event) {
@@ -75,12 +93,21 @@ app.controller('PageCtrl', function ($scope, $http, $location, Firma, Grad) {
             });
         });
     }
-    $scope.loadFirma(3);
+    $scope.claimFirma = function () {
+        $scope.firma.admin_fk = $scope.korisnik.id;
+        var push_object = Object.assign({}, $scope.firma);
+        push_object.grad_fk = $scope.firma.grad_fk.id;
+        Firma.update(push_object, function (data, respHead) {
+            // @TODO ovdje treba prikazati poruku o uspjesnom update
+        });
+    }
+    $scope.loadFirma($routeParams['firmaId']);
 })
 app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
         $location.path(path);
     };
+    $rootScope.location = $location;
     $rootScope.isLoggedIn = function () {
         return $http.get('/korisnik/')
             .then(function(response) {

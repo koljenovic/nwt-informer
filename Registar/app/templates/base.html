@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" ng-href="#/"><img src="/static/img/kontakt_logo.png" alt="Kontakt+" /></a>
+                <a class="navbar-brand" ng-href="#/" ng-hide="location.path() == '/'"><img src="/static/img/kontakt_logo.png" alt="Kontakt+" /></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <div class="navbar-form navbar-right" ng-show="korisnik">
@@ -52,8 +52,8 @@
                     <li role="presentation"><a href="#" ng-click="changeLanguage('en')"><img src="/static/img/en.png" alt="english" /></a></li>
                     <li role="presentation"><a href="#" ng-click="changeLanguage('bs')"><img src="/static/img/bs.png" alt="bosanski" /></a></li>
                 </ul>
-                <form class="navbar-form navbar-right">
-                    <input type="text" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" class="form-control" placeholder="Search">
+                <form class="navbar-form navbar-right" ng-hide="location.path() == '/'">
+                    <input type="text" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue, 5)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" class="form-control" placeholder="Search" typeahead-focus-first="false">
                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </form>
             </div><!--/.navbar-collapse -->

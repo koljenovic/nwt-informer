@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^osoba/$', OsobaFormView.as_view()),
     url(r'^part/firma/$', TemplateView.as_view(template_name='parts/firma.html')),
     url(r'^part/profil/$', TemplateView.as_view(template_name='parts/profil.html')),
+    url(r'^part/search/$', TemplateView.as_view(template_name='parts/search.html')),
     url(r'^search/', FirmaSearchView.as_view()),
 ]
 

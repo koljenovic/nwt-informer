@@ -1,0 +1,98 @@
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div id="search-page" ng-controller="SearchCtrl">
+    <div class="overlay" id="cogs-overlay" ng-show="cogs">
+        <div id="cogs">
+            <img src="/static/img/gears-128.svg">
+        </div>
+    </div>
+    <div class="overlay" id="uputstvo-overlay" ng-show="uputstvo">
+        <div id="uputstvo" class="col-md-8">
+             <div class="well well-lg window">
+                 <div id="close-btn">
+                    <a id="help-close" href ng-click="uputstvo = !uputstvo"><span class="glyphicon glyphicon-remove gi-2x"></span></a>
+                 </div>
+                 <dl class="dl-horizontal">
+                    <dt><h4>Opšte upute</h4></dt>
+                    <dd></dd>
+                    <dt>Velika slova i afrikati</dt>
+                    <dd>ne morate brinuti o velikim slovima ili afrikatima <kbd>cevabdžinica tuzla</kbd></dd>
+                    <dt>Kombinovanje uslova</dt>
+                    <dd>možete slobodno kombinovati bilo koji od uslova <kbd>ivana mostar</kbd></dd>
+                    <dt>Telefonski brojevi</dt>
+                    <dd>jedini ispravan format telefonskog broja je trocifreni pozivni broj praćen ostalim ciframa <kbd><strong>051</strong>999777</kbd></dd>
+                    <dt><h4></span>Poslovni registar</h4></dt>
+                    <dd></dd>
+                    <dt></dt>
+                    <dd><strong>Osnovni podaci o registraciji preduzeća u RS i FBiH.</strong></dd>
+                    <dt>ID broj</dt>
+                    <dd>pretražite registar po jedinstvenom ID broju preduzeća</dd>
+                    <dt>Naziv</dt>
+                    <dd>pretraga po nazivu preduzeća</dd>
+                 </dl>
+             </div>
+        </div>
+    </div>
+    <div class="overlay" id="legalese-overlay" ng-show="legalese">
+        <div id="legalese" class="col-md-8">
+             <div class="well well-lg window">
+                 <div id="close-btn">
+                    <a id="legalese-close" href ng-click="legalese = !legalese"><span class="glyphicon glyphicon-remove gi-2x"></span></a>
+                 </div>
+                 <small><strong>Pravno ograđivanje</strong>: ova aplikacija je u ranoj fazi aktivnog razvoja, očekujte greške i povremenu nedostupnost. Svi podaci prenose se u interesu jednostavnog informiranja šire javnosti iz otvorenih i javno dostupnih registara bez bilo kakvih garancija od strane autora aplikacije ili povezanih subjekata, a posebno u pogledu valjanosti, ažurnosti i/ili dostupnosti podataka. Aplikacija je dostupna za korištenje bez naknade i namijenjena je isključivo za svrhe ličnog informisanja. Svaka šteta nastala korištenjem ili zloupotrebom ove aplikacije isključiva je odgovornost samog korisnika te se autor aplikacije ili bilo koji povezani subjekt ne može smatrati odgovornim za nastalu štetu. Aplikacija koristi dostupne tehnologije za brojanje posjeta i bilježenje ponašanja korisnika. Ukoliko želite da se vaši lični podaci uklone iz određenog javnog registra, molimo vas da se obratite izravno instituciji nadležnoj za njegovo održavanje. Korištenjem ove aplikacije pristajete na navedene uslove.</small>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="logobox" class="row">
+            <a id="logo-link">
+                <img src="/static/img/kontakt_logo_v2_plus.png" class="img-responsive">
+            </a>
+        </div>
+        <div class="row">
+            <div id="forma-prikaz" class="col-md-8">
+                <form class="form-horizontal" ng-submit="firmaSearch(searchString)">
+                    <label for="search">Pronađi javne podatke o pravnom ili fizičkom licu:</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" id="search" class="form-control input-lg" placeholder="ime ili naziv, id broj, pdv broj, telefon ili adresa" autofocus autocomplete="off" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue, 5)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" typeahead-focus-first="false" />
+                        <span class="input-group-btn">
+                            <button id="help-1" class="btn btn-info" type="button" ng-click="uputstvo = !uputstvo"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></button>
+                            <button id="dugme" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"><span class="sr-only">Traži</span></span></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row buffer">
+            <div id="rezultat" class="col-md-8 table-responsive" ng-show="searchData.count > 0">
+                <div class="text-center" ng-show="searchData.count > 10">
+                    <uib-pagination boundary-links="true" ng-change="loadPage()" max-size="10" total-items="searchData.count" ng-model="currentPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                </div>
+                <table id="tabela" class="table table-striped table-hover buffer">
+                    <thead>
+                        <tr id="kolone-naziv">
+                            <th>Naziv firme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="firmaTmp in searchData.results">
+                            <td><a href ng-click="go('/firma/' + firmaTmp.id)">{- firmaTmp.naziv -}</a></td>
+                        </tr>
+                        <tr id="zero" ng-show="zero">
+                            <td colspan="42"><strong>Nažalost nije pronađen nijedan rezultat koji odgovara vašoj pretrazi.</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="droido" class="col-md-8">
+                <a href="https://play.google.com/store/apps/details?id=ba.lab.canary.canaryprototype&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" /></a>
+            </div>
+            <div id="disclaimer" class="col-md-8">
+                <small><a id="legalese-button" href ng-click="legalese = !legalese"><strong>Pravno ograđivanje</strong></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

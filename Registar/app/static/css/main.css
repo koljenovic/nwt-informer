@@ -144,3 +144,117 @@ body {
     margin: 15px 25px 0 -1px;
     padding: 0;
 }
+
+ul[id^="typeahead-"] {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Kontakt Search page START */
+
+#search-page .container, #search-page .container-fluid {
+    .center-block();
+}
+
+#droido img {
+    width:180px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#search-page .gi-2x{font-size: 2em;}
+#search-page .gi-3x{font-size: 3em;}
+#search-page .gi-4x{font-size: 4em;}
+#search-page .gi-5x{font-size: 5em;}
+
+#search-page .glyphicon.glyphicon-remove {
+    color: red;
+}
+
+#rezultat, #uputstvo, #disclaimer, #zero, #cnt-menu, #droido, #legalese, .sniper {
+    .center-block();
+    margin: 0 auto;
+    float: none;
+    overflow-y: hidden;
+}
+
+#forma-prikaz {
+    .center-block();
+    margin: 0 auto;
+    float: none;
+}
+
+#droido, #disclaimer {
+    text-align: center;
+    margin-top: 25px;
+}
+
+#search-page .nav-pills > li > a {
+    margin: 0 5px;
+    background-color: #DEEEFC;
+}
+
+#cogs {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+#uputstvo, #legalese, .sniper {
+    margin: 25px auto;
+}
+
+.overlay {
+    background-color: rgba(51, 51, 51, 0.17);
+    width: 100%;
+    position: absolute;
+    z-index: 250;
+    height: 100%;
+}
+
+#search-page .window {
+    border: 2px #FF8500 solid;
+}
+
+#rezultat {
+    margin-bottom: 20px;
+    border: 0;
+}
+
+#search-page .buffer {
+    margin: 40px 0;
+}
+
+#zero, #zero-one {
+    text-align: center;
+}
+
+#logobox {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    margin: 66px auto;
+    text-align: center;
+    max-width: 860px;
+}
+
+::selection {
+    background: #FF8500;
+}
+
+::-moz-selection{
+    background: #FF8500;
+}
+
+::-webkit-selection {
+    background: #FF8500;
+}
+
+#search-page span.hl {
+    font-weight: bold;
+}
