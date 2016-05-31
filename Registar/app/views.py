@@ -124,7 +124,12 @@ class KontaktCreate(generics.ListCreateAPIView):
 class KontaktDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = KontaktSerializer
-
+    
+"""
+class KontaktDetailFirma(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Kontakt.objects.all()
+    serializer_class = KontaktSerializer
+"""
 
 class AdresarCreate(generics.ListCreateAPIView):
     queryset = Adresar.objects.all()

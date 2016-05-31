@@ -60,6 +60,33 @@ app.controller('SearchCtrl', function ($scope, $http) {
     }
 });
 app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Firma, Grad) {
+	
+	$.ajax({
+            url: '/api/kontakt/',
+            method: 'GET'
+        }).then(function(data) {
+            $scope.dummy = data.results;
+            
+                           
+            $scope.$apply(function() {
+                $scope.dummy.push(data.results);
+                $scope.quantity = $scope.dummy.length - 1;
+                
+                $scope.kontakti = [];
+                $scope.kategorije = [];
+                for (var i=0; i<$scope.quantity; i++) {
+                	if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
+                		$scope.kontakti.push($scope.dummy[i]);
+		            	if($scope.kategorije.indexOf($scope.dummy[i].naziv) == -1) 
+		            		$scope.kategorije.push($scope.dummy[i].naziv);
+		            }
+                }
+                
+            });
+        });
+    
+    
+	 
     $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
@@ -93,6 +120,8 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Fir
             });
         });
     }
+    
+	   	
     $scope.claimFirma = function () {
         $scope.firma.admin_fk = $scope.korisnik.id;
         var push_object = Object.assign({}, $scope.firma);
@@ -101,7 +130,11 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, Fir
             // @TODO ovdje treba prikazati poruku o uspjesnom update
         });
     }
-    $scope.loadFirma($routeParams['firmaId']);
+    
+    
+    $scope.loadFirma($routeParams['firmaId']);  
+     
+    
 })
 app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
@@ -122,6 +155,7 @@ app.run(function($rootScope, $http, $location) {
         });
     });
 });
+
 app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User) {
     $scope.loadOsoba = function (osobaId) {
         osobaId = !osobaId ? $scope.korisnik.id : osobaId;
