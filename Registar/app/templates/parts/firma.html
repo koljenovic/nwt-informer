@@ -66,9 +66,10 @@
                     </div>
                 </div>
                 <div class="col-md-3"">
-                    <h2>Kontakti <span ng-show="korisnik"><button tooltip-placement="top" tooltip-trigger uib-tooltip="Dodaj novi kontakt" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span></h2>
+                    <h2>Kontakti <span ng-show="korisnik"><button tooltip-placement="top" tooltip-trigger uib-tooltip="Dodaj novi kontakt" type="button" class="btn btn-sm btn-success" ng-click="go('/kontakt/novi/'+firmaId)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span></h2>
                     <p></p>
                     <div class="kontakt thumbnail" ng-repeat="kat in kategorije">
+                    
                         <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
                             <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                             <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
@@ -76,8 +77,9 @@
                         
 	                    <div class="kontakt-info" >
 	                    	<h4>{- kat -}</h4>
-			                <ul class="list-unstyled" ng-show="{- kon.naziv -} == kat" ng-repeat="kon in kontakti | limitTo:quantity">
-			                	<li>
+			                <ul class="list-unstyled"  ng-repeat="kon in kontakti | limitTo:quantity">
+			                	
+			                	<li ng-show="'{- kon.naziv -}' == '{- kat -}'">
 			                	<span ng-show="{- kon.vrsta_fk -}=='1'"  class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
 			                	<span ng-show="{- kon.vrsta_fk -}=='2'" class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 			                	<span ng-show="{- kon.vrsta_fk -}=='3'" class="glyphicon glyphicon-phone" aria-hidden="true"></span>
@@ -88,38 +90,7 @@
 	                    </div>
                         
                     </div>
-                    
-                    <!--
-                    <div class="kontakt thumbnail">
-                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
-                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                        </div>
-                        <div class="kontakt-info">
-                            <h4>Maloproadja</h4>
-                            <ul class="list-unstyled">
-                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> maloprodaja@klas.ba</li>
-                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 146</li>
-                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 664 190</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="kontakt thumbnail">
-                        <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
-                            <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                        </div>
-                        <div class="kontakt-info">
-                            <h4>KLAS Centar Mostar</h4>
-                            <ul class="list-unstyled">
-                                <li><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Bišće polje bb, Mostar</li>
-                                <li><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> veleprodaja@klas.ba</li>
-                                <li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +387 33 727 230</li>
-                                <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span> +387 33 641 029</li>
-                            </ul>
-                        </div>
-                    </div>
-                    -->
+
                 </div>
                 <div id="tim" class="col-md-6">
                     <h2>Tim <span ng-show="korisnik"><button tooltip-placement="top" tooltip-trigger uib-tooltip="Pridruži se timu" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></button></div></h2>

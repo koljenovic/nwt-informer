@@ -45,6 +45,7 @@ app.factory('Grad', ['$resource', function($resource) {
         {id: '@id'},
         {'query' : {'method': 'GET', isArray: false}});
 }]);
+
 app.controller('SearchCtrl', function ($scope, $http) {
     $scope.legalese = false;
     $scope.firmaSearch = function (searchString, page=1) {
@@ -58,6 +59,85 @@ app.controller('SearchCtrl', function ($scope, $http) {
     $scope.loadPage = function () {
         $scope.firmaSearch($scope.firmaSearchString, $scope.currentPage);
     }
+});
+
+app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
+    $scope.firmaId = $routeParams['idFirma'];
+    $scope.formData = {};
+    $scope.brojackontakta = $scope.formData.length - 1;
+    $scope.newId = Math.floor((Math.random() * 100) + 1); 
+    $scope.dataSet = [];
+       
+    
+    
+    $scope.processForm = function() {
+    	    for (var i=0; i < $scope.brojackontakta; i++) {
+				if ($scope.formData.telefon != null) {
+					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.telefon, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
+					$http({
+					method  : 'POST',
+					url     : 'api/kontakt/',
+					data    : $.param($scope.dataSet),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+					})
+					.success(function(data) {
+					console.log(data);
+					});
+					}
+				else if ($scope.formData.mobitel != null) {
+					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.mobitel, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
+					$http({
+					method  : 'POST',
+					url     : 'api/kontakt/',
+					data    : $.param($scope.dataSet),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+					})
+					.success(function(data) {
+					console.log(data);
+					});
+					}
+				else if ($scope.formData.email != null) {
+					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.email, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
+					$http({
+					method  : 'POST',
+					url     : 'api/kontakt/',
+					data    : $.param($scope.dataSet),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+					})
+					.success(function(data) {
+					console.log(data);
+					});
+					} 
+				else if ($scope.formData.fax != null) {
+					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.fax, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
+					$http({
+					method  : 'POST',
+					url     : 'api/kontakt/',
+					data    : $.param($scope.dataSet),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+					})
+					.success(function(data) {
+					console.log(data);
+					});
+					}
+				else if ($scope.formData.adresa != null) {
+					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.adresa, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
+					$http({
+					method  : 'POST',
+					url     : 'api/kontakt/',
+					data    : $.param($scope.dataSet),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+					})
+					.success(function(data) {
+					console.log(data);
+					});
+					}
+			}
+    
+		
+	};
+    
+	
 });
 app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $timeout, Upload, Firma, Grad) {
     $.ajax({
@@ -146,6 +226,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $ti
         $scope.logoFile = file;
     }
     $scope.loadFirma($routeParams['firmaId']);
+    $scope.firmaId = $routeParams['firmaId'];
 })
 app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
