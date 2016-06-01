@@ -25,6 +25,7 @@ sudo apt-get -y --force-yes install zlib1g-dev libjpeg-dev libfreetype6-dev pyth
 pip install django-simple-captcha
 pip install django-angular
 pip install psycopg2
+pip install django-material
 sudo apt-get -y --force-yes install git
 
 sudo apt-get install openjdk-7-jre

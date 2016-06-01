@@ -34,6 +34,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app.apps.AppConfig',
+    'material',
+    'material.admin',
     'django.contrib.admin',
     'registration',
     'django.contrib.auth',
