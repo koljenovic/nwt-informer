@@ -53,7 +53,7 @@ REGISTRATION_FORM = 'app.forms.RegistrationCaptcha'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 100
 }
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler"]

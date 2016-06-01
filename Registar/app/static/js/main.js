@@ -61,84 +61,6 @@ app.controller('SearchCtrl', function ($scope, $http) {
     }
 });
 
-app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
-    $scope.firmaId = $routeParams['idFirma'];
-    $scope.formData = {};
-    $scope.brojackontakta = $scope.formData.length - 1;
-    $scope.newId = Math.floor((Math.random() * 100) + 1); 
-    $scope.dataSet = [];
-       
-    
-    
-    $scope.processForm = function() {
-    	    for (var i=0; i < $scope.brojackontakta; i++) {
-				if ($scope.formData.telefon != null) {
-					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.telefon, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
-					$http({
-					method  : 'POST',
-					url     : 'api/kontakt/',
-					data    : $.param($scope.dataSet),  // pass in data as strings
-					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-					})
-					.success(function(data) {
-					console.log(data);
-					});
-					}
-				else if ($scope.formData.mobitel != null) {
-					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.mobitel, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
-					$http({
-					method  : 'POST',
-					url     : 'api/kontakt/',
-					data    : $.param($scope.dataSet),  // pass in data as strings
-					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-					})
-					.success(function(data) {
-					console.log(data);
-					});
-					}
-				else if ($scope.formData.email != null) {
-					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.email, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
-					$http({
-					method  : 'POST',
-					url     : 'api/kontakt/',
-					data    : $.param($scope.dataSet),  // pass in data as strings
-					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-					})
-					.success(function(data) {
-					console.log(data);
-					});
-					} 
-				else if ($scope.formData.fax != null) {
-					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.fax, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
-					$http({
-					method  : 'POST',
-					url     : 'api/kontakt/',
-					data    : $.param($scope.dataSet),  // pass in data as strings
-					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-					})
-					.success(function(data) {
-					console.log(data);
-					});
-					}
-				else if ($scope.formData.adresa != null) {
-					$scope.dataSet.push({ "id" : $scope.newId, "naziv" : $scope.formData.naziv, "kontakt" : $scope.formData.adresa, "vrsta_fk" : "1", "firma_fk" : $scope.firmaId  });
-					$http({
-					method  : 'POST',
-					url     : 'api/kontakt/',
-					data    : $.param($scope.dataSet),  // pass in data as strings
-					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-					})
-					.success(function(data) {
-					console.log(data);
-					});
-					}
-			}
-    
-		
-	};
-    
-	
-});
 app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $timeout, Upload, Firma, Grad) {
     $.ajax({
         url: '/api/kontakt/',
@@ -381,4 +303,134 @@ app.controller('Ctrl', function ($scope, $translate) {
     $scope.changeLanguage = function (key) {
         $translate.use(key);
     };
+});
+app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
+    $scope.firmaId = $routeParams['idFirma'];
+    $scope.formData = {};
+    $scope.newId = $scope.quantity + 1; 
+    $scope.errors = false;
+    
+    
+	$scope.processForm = function() {    			    
+		if ($scope.formData.telefon != null) {
+			$scope.newId = $scope.newId + 1;  
+			var foo = {id : $scope.newId, 
+				       naziv : $scope.formData.naziv, 
+				       kontakt : $scope.formData.telefon, 
+				       vrsta_fk : 2, 
+				       firma_fk : $scope.firmaId  };
+			var jsonString = JSON.stringify(foo, null, '\t'); 
+			var jsonObject = JSON.parse(jsonString);
+		
+			$http({
+			method  : 'POST',
+			url     : '/api/kontakt/',
+			data    : $.param(jsonObject),  // pass in data as strings
+			//data    : $scope.dataSet,
+			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data 
+			})
+			.success(function(data) {
+			
+			
+			}).error(function(data) {
+				$scope.errors = true;
+			});
+		
+		}
+	
+		if ($scope.formData.mobitel != null) {
+			$scope.newId = $scope.newId + 1; ;
+			var foo = {id : $scope.newId, 
+				       naziv : $scope.formData.naziv, 
+				       kontakt : $scope.formData.mobitel, 
+				       vrsta_fk : 4, 
+				       firma_fk : $scope.firmaId  };
+			var jsonString = JSON.stringify(foo, null, '\t');
+			var jsonObject = JSON.parse(jsonString);
+			$http({
+			method  : 'POST',
+			url     : '/api/kontakt/',
+			data    : $.param(jsonObject),  // pass in data as strings
+			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data 
+			})
+			.success(function(data) {
+				console.log(data);
+			}).error(function(data) {
+				$scope.errors = true;
+			});
+		}
+	
+		if ($scope.formData.email != null) {
+			$scope.newId = $scope.newId + 1; 
+			var foo = {id : $scope.newId, 
+				       naziv : $scope.formData.naziv, 
+				       kontakt : $scope.formData.email, 
+				       vrsta_fk : 1, 
+				       firma_fk : $scope.firmaId  };
+			var jsonString = JSON.stringify(foo, null, '\t');
+			var jsonObject = JSON.parse(jsonString);
+			$http({
+			method  : 'POST',
+			url     : '/api/kontakt/',
+			data    : $.param(jsonObject),  // pass in data as strings
+			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data
+			})
+			.success(function(data) {
+				console.log(data);
+			}).error(function(data) {
+				$scope.errors = true;
+			});
+		} 
+		if ($scope.formData.fax != null) {
+			$scope.newId = $scope.newId + 1; 
+			var foo = {id : $scope.newId, 
+				       naziv : $scope.formData.naziv, 
+				       kontakt : $scope.formData.fax, 
+				       vrsta_fk : 3, 
+				       firma_fk : $scope.firmaId  };
+			var jsonString = JSON.stringify(foo, null, '\t');
+			var jsonObject = JSON.parse(jsonString);
+			$http({
+			method  : 'POST',
+			url     : '/api/kontakt/',
+			data    : $.param(jsonObject),  // pass in data as strings
+			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data 
+			})
+			.success(function(data) {
+				console.log(data);
+			}).error(function(data) {
+				$scope.errors = true;
+			});
+		}
+		if ($scope.formData.adresa != null) {
+			$scope.newId = $scope.newId + 1; 
+			var foo = {id : $scope.newId, 
+				       naziv : $scope.formData.naziv, 
+				       kontakt : $scope.formData.adresa, 
+				       vrsta_fk : 5, 
+				       firma_fk : $scope.firmaId  };
+			var jsonString = JSON.stringify(foo, null, '\t');
+			var jsonObject = JSON.parse(jsonString);
+			$http({
+			method  : 'POST',
+			url     : '/api/kontakt/',
+			data    : $.param(jsonObject),  // pass in data as strings
+			headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data 
+			})
+			.success(function(data) {
+				console.log(data);
+			}).error(function(data) {
+				$scope.errors = true;
+			});
+		}
+	
+		if ($scope.errors == false)
+			$scope.poruka = "Kontakt je uspješno dodan!";
+	
+	
+		return false;
+	};
+	
+    
+	
 });

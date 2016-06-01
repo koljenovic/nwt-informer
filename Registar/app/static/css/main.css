@@ -274,3 +274,11 @@ ul[id^="typeahead-"] {
 #search-page span.hl {
     font-weight: bold;
 }
+
+#messages {
+	color: red;
+}
+
+#successful {
+	color: green;
+}
