@@ -97,11 +97,11 @@ class Kontakt(models.Model):
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
     kontakt = models.CharField(max_length=250)
     kategorija = models.IntegerField(null=True, blank=True)
-    naziv = models.CharField(max_length=250, null=True, blank=True)
+    naziv = models.CharField(max_length=250)
 
     def clean(self):
-        if self.kontakt is None:
-            raise ValidationError(_('Kontakt je obavezno polje.'))
+        if self.naziv is None:
+            raise ValidationError(_('Naziv je obavezno polje.'))
 
 
 class Adresar(models.Model):

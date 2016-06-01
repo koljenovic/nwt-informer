@@ -17,6 +17,9 @@
         }).when('/firma/:firmaId', {
             templateUrl: '/part/firma/',
             controller: 'PageCtrl'
+        }).when('/kontakt/novi/:idFirma', {
+            templateUrl: '/part/kontakt/novi/',
+            controller: 'KontaktCtrl'
         })
         .otherwise('/');
     });
