@@ -6,16 +6,40 @@ app.config(function ($interpolateProvider, $translateProvider, $resourceProvider
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $resourceProvider.defaults.stripTrailingSlashes = false;
     $translateProvider.translations('en', {
+        team: 'Team',
+        contacts: 'Contacts',
+        logout: 'Logout',
+        edit_profile: 'Edit profile',
+        save_changes: 'Save changes',
+        claim_profile: 'Claim profile',
+        register: 'Register',
+        directory_add: 'Favorite',
+        login: 'Log in',
+        kontakt_podaci: 'Contact data',
+        legalese: 'Legal disclaimer',
+        search_text: 'Find public data about a company or person:',
         home: 'Home',
         about: 'About',
         contact: 'Contact',
     });
     $translateProvider.translations('bs', {
+        team: 'Tim',
+        contacts: 'Kontakti',
+        logout: 'Odjavi se',
+        edit_profile: 'Uredi profil',
+        save_changes: 'Spremi izmjene',
+        claim_profile: 'Preuzmi profil',
+        register: 'Registruj se',
+        directory_add: 'Dodaj u imenik',
+        login: 'Prijavi se',
+        kontakt_podaci: 'Kontakt podaci',
+        legalese: 'Pravno ograđivanje',
+        search_text: 'Pronađi javne podatke o pravnom ili fizičkom licu:',
         home: 'Početna',
         about: 'O aplikaciji',
         contact: 'Kontakt',
     });
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.preferredLanguage('bs');
 });
 app.factory('User', ['$resource', function($resource) {
     return $resource('/api/user/:id/',
@@ -59,7 +83,10 @@ app.controller('SearchCtrl', function ($scope, $http) {
         $scope.firmaSearch($scope.firmaSearchString, $scope.currentPage);
     }
 });
-app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $timeout, Upload, Firma, Grad) {
+app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $translate, Upload, Firma, Grad) {
+    $scope.changeLanguage = function (key) {
+        $translate.use(key);
+    };
     $.ajax({
         url: '/api/kontakt/',
         method: 'GET'
@@ -294,10 +321,5 @@ app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, django
             });
         }
         return false;
-    };
-});
-app.controller('Ctrl', function ($scope, $translate) {
-    $scope.changeLanguage = function (key) {
-        $translate.use(key);
     };
 });

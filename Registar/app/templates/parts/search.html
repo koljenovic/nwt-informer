@@ -49,9 +49,9 @@
         <div class="row">
             <div id="forma-prikaz" class="col-md-8">
                 <form class="form-horizontal" ng-submit="firmaSearch(searchString)">
-                    <label for="search">Pronađi javne podatke o pravnom ili fizičkom licu:</label>
+                    <label translate="search_text" for="search">Pronađi javne podatke o pravnom ili fizičkom licu:</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" id="search" class="form-control input-lg" placeholder="ime ili naziv, id broj, pdv broj, telefon ili adresa" autofocus autocomplete="off" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue, 5)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" typeahead-focus-first="false" />
+                        <input type="text" id="search" class="form-control input-lg" autofocus autocomplete="off" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue, 5)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" typeahead-focus-first="false" />
                         <span class="input-group-btn">
                             <button id="help-1" class="btn btn-info" type="button" ng-click="uputstvo = !uputstvo"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></button>
                             <button id="dugme" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"><span class="sr-only">Traži</span></span></button>
@@ -85,7 +85,7 @@
                 <a href="https://play.google.com/store/apps/details?id=ba.lab.canary.canaryprototype&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" /></a>
             </div>
             <div id="disclaimer" class="col-md-8">
-                <small><a id="legalese-button" href ng-click="legalese = !legalese"><strong>Pravno ograđivanje</strong></small>
+                <small><a id="legalese-button" href ng-click="legalese = !legalese"><strong translate="legalese">Pravno ograđivanje</strong></small>
             </div>
         </div>
     </div>

@@ -52,8 +52,8 @@
                     <button type="button" class="btn btn-primary" ng-click="go('/profil')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>
                 </div>
                 <ul id="langbar" class="nav navbar-nav navbar-right">
-                    <li role="presentation"><a href="#" ng-click="changeLanguage('en')"><img src="/static/img/en.png" alt="english" /></a></li>
-                    <li role="presentation"><a href="#" ng-click="changeLanguage('bs')"><img src="/static/img/bs.png" alt="bosanski" /></a></li>
+                    <li role="presentation"><a href ng-click="changeLanguage('en')"><img src="/static/img/en.png" alt="english" /></a></li>
+                    <li role="presentation"><a href ng-click="changeLanguage('bs')"><img src="/static/img/bs.png" alt="bosanski" /></a></li>
                 </ul>
                 <form class="navbar-form navbar-right" ng-hide="location.path() == '/'">
                     <input type="text" ng-model="searchString" uib-typeahead="firmaTmp as firmaTmp.naziv for firmaTmp in search($viewValue, 5)" typeahead-on-select="searchSelect($item, $model, $label, $event)" typeahead-min-length="3" class="form-control" placeholder="Search" typeahead-focus-first="false">

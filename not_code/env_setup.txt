@@ -37,6 +37,8 @@ sudo pip install git+https://github.com/django-haystack/django-haystack.git
 pip install django-haystack
 pip install drf-haystack
 
+pip install django-dashing
+
 git clone https://github.com/koljenovic/nwt-informer.git
 cd nwt-informer/Registar
 python manage.py makemigrations

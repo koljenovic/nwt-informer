@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'captcha',
     'djng',
+    'dashing',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 3
