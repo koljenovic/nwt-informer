@@ -97,7 +97,7 @@ class Kontakt(models.Model):
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
     kontakt = models.CharField(max_length=250)
     kategorija = models.IntegerField(null=True, blank=True)
-    naziv = models.CharField(max_length=250)
+    naziv = models.CharField(max_length=250, null=True, blank=True)
 
     def clean(self):
         if self.naziv is None:

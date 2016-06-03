@@ -446,6 +446,7 @@ app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
 
         if ($scope.errors == false) {
             $scope.poruka = "Kontakt je uspješno dodan!";
+            $scope.formData = {};
         }
         return false;
     };

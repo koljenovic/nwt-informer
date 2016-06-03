@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <h2><span translate="contacts">Kontakti</span> <span ng-show="korisnik"><button tooltip-placement="top" tooltip-trigger uib-tooltip="Dodaj novi kontakt" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span></h2>
+                    <h2><span translate="contacts">Kontakti</span> <span ng-show="korisnik"><button tooltip-placement="top" tooltip-trigger uib-tooltip="Dodaj novi kontakt" type="button" class="btn btn-sm btn-success" ng-click="go('/kontakt/novi/'+firmaId)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span></h2>
                     <p></p>
                     <div class="kontakt thumbnail" ng-repeat="kat in kategorije">
                         <div class="btn-group-vertical item-admin" ng-show="editMode" role="group">
