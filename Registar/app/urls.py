@@ -34,8 +34,8 @@ urlpatterns = [
     url(r'^part/kontaktosoba/novi/$', TemplateView.as_view(template_name='parts/kontaktosoba_novi.html')),
     url(r'^search/', FirmaSearchView.as_view()),
     url(r'^api/tim/$', TimCreate.as_view()),
-    url(r'^api/uloga/user/(?P<user_fk>[0-9]+)/$', UlogaDetails.as_view()),
-    url(r'^api/uloga/$', UlogaDetails.as_view()),
+    url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
+    url(r'^api/uloga/$', UlogaCreate.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

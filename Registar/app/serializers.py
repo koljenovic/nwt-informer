@@ -48,10 +48,6 @@ class TimSerializer(serializers.ModelSerializer):
         model = Kontakt
         fields = ['id', 'osoba_fk', 'kontakt', 'vrsta_fk']
         
-class UlogaSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Uloga
-		fields = ['id', 'naziv_uloge', 'user_fk', 'firma_fk']
 		
 
 class AdresarSerializer(serializers.ModelSerializer):

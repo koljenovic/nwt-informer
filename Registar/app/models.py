@@ -86,12 +86,7 @@ class Osoba(models.Model):
             'super': self.user_fk.is_superuser,
             'staff': self.user_fk.is_staff,
             }
-            
-class Uloga(models.Model):
-    user_fk = models.ForeignKey(User, on_delete=models.CASCADE)
-    naziv_uloge = models.CharField(max_length=250)
-    firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
-    
+                
 
 # Preset enumerirane vrijednosti
 class VrstaKontakta(models.Model):

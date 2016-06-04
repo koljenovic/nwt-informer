@@ -121,16 +121,6 @@ class VrstaKontaktaDetail(generics.RetrieveUpdateDestroyAPIView):
 class TimCreate(generics.ListAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = TimSerializer
-    
-    
-class UlogaDetails(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Uloga.objects.all()
-    serializer_class = UlogaSerializer  
-    lookup_field = 'user_fk'  
-
-class UlogaCreate(generics.ListCreateAPIView):
-    queryset = Uloga.objects.all()
-    serializer_class = UlogaSerializer  
        
     
 class KontaktCreate(generics.ListCreateAPIView):
