@@ -32,6 +32,15 @@ def get_user(request, **kwargs):
         except Exception, e:
             pass
     return HttpResponse(json.dumps({'korisnik': osoba.get_fields() if osoba else { 'username': user.username, 'id': user.id } if user else None }))
+    
+    
+def get_userid(request):
+	if request.user.is_authenticated():
+		return HttpResponse(json.dumps({'result': {'logged': True}, 'user': request.user.id}), content_type="application/json")
+	else:
+		return HttpResponse(json.dumps({'result': {'logged': False}}), content_type="application/json")
+
+    
 
 class RegisterView(RegistrationView):
     template_name = 'registration/register.html'
@@ -50,6 +59,10 @@ class OsobaFormView(FormView):
 class UlogaCreate(generics.ListCreateAPIView):
     queryset = Uloga.objects.all()
     serializer_class = UlogaSerializer
+    
+class UlogaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Uloga.objects.all()
+    serializer_class = UlogaSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
@@ -61,11 +74,6 @@ class UserDetail_ByUsername(generics.RetrieveAPIView):
     queryset = User.objects.all()
     lookup_field = 'username'
     serializer_class = UserSerializer
-
-
-class UlogaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Uloga.objects.all()
-    serializer_class = UlogaSerializer
 
 
 class GradCreate(generics.ListCreateAPIView):

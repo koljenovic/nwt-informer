@@ -84,11 +84,75 @@ app.controller('SearchCtrl', function ($scope, $http) {
         $scope.firmaSearch($scope.firmaSearchString, $scope.currentPage);
     }
 });
-app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $translate, Upload, Firma, Grad) {
+app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $translate, Upload, Firma, Grad, Osoba, User) {
     $scope.changeLanguage = function (key) {
         $translate.use(key);
     };
+
+/* 
+	****** DODAVANJE OSOBA U TIM - POČETAK ****** 
+*/     
+    $scope.isCollapsed = true;
+    $scope.success = "";
+    $scope.idFirma = $routeParams['firmaId'];
+    $scope.timData = {};
+
+	// dobavljanje broja uloga u tabeli app_uloga
+    $.ajax({
+        url: '/api/uloga/',
+        method: 'GET'
+    }).then(function(data) {
+        $scope.tmp = data.results;
+        $scope.$apply(function() {
+            $scope.tmp.push(data.results);
+            $scope.brUloga = $scope.tmp.length - 1;
+        });
+    });
     
+	  
+  	$scope.joinTeam = function () {
+  		$http({method: 'POST', url: '/currentuser/'}).
+		success(function(data){
+			$scope.idUser = data.user;
+			$scope.ulogaId = $scope.brUloga + 1;
+			
+			var foo = {id : $scope.ulogaId,
+                       naziv_uloge : $scope.timData.uloga,
+                       firma_fk : $scope.idFirma,
+                       user_fk : $scope.idUser  };
+            var jsonString = JSON.stringify(foo, null, '\t');
+            var jsonObject = JSON.parse(jsonString);
+			
+			$http({
+            method  : 'POST',
+            url     : '/api/uloga/',
+            data    : $.param(jsonObject),  
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  
+            })
+            .success(function(data) {
+                $scope.success = "Uspješno ste dodani u tim!";
+            }).error(function(data) {
+            	alert(jsonString);
+            	$scope.failed = "Greška!";
+            });
+			
+		})
+		.error (function(data){
+			alert(data);
+		});
+		
+		
+  	};
+    
+/* 
+	****** DODAVANJE OSOBA U TIM - KRAJ ****** 
+*/
+
+
+
+/* 
+	****** IZLISTAVANJE KONTAKATA FIRME NA STRANICI FIRME - POČETAK ****** 
+*/
     $.ajax({
         url: '/api/kontakt/',
         method: 'GET'
@@ -109,9 +173,15 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
             }
         });
     });
+/* 
+	****** IZLISTAVANJE KONTAKATA FIRME NA STRANICI FIRME - KRAJ ****** 
+*/
     
-    
-    
+
+
+/* 
+	****** IZLISTAVANJE OSOBA U TIMU NA STRANICI FIRME - POČETAK ****** 
+*/   
 	$.ajax({
         url: '/api/uloga/',
         method: 'GET'
@@ -188,14 +258,11 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
         });
     });
     
-    
-    
-    
-    
-    
-    
-    
-       
+/* 
+	****** IZLISTAVANJE OSOBA U TIMU NA STRANICI FIRME - KRAJ ****** 
+*/  
+
+     
     $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
@@ -547,10 +614,3 @@ app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
 
 
 
-app.controller('TimCtrl', function ($scope, $http, $routeParams) {
-
-	
-	
-	
-
-});

@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^api/tim/$', TimCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
     url(r'^api/uloga/$', UlogaCreate.as_view()),
+    url(r'^currentuser/$', get_userid, name="get_userid"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
