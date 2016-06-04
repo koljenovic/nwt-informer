@@ -24,7 +24,6 @@ urlpatterns = [
     url(r'^api/vrstakontakta/(?P<pk>[0-9]+)/$', VrstaKontaktaDetail.as_view()),
     url(r'^api/kontakt/$', KontaktCreate.as_view()),
     url(r'^api/kontakt/(?P<pk>[0-9]+)/$', KontaktDetail.as_view()),
-    #url(r'^api/kontakt/firma/(?P<firma_fk>[0-9]+)/$', KontaktDetailFirma.as_view()),
     url(r'^api/adresar/$', AdresarCreate.as_view()),
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
@@ -32,7 +31,11 @@ urlpatterns = [
     url(r'^part/profil/$', TemplateView.as_view(template_name='parts/profil.html')),
     url(r'^part/search/$', TemplateView.as_view(template_name='parts/search.html')),
     url(r'^part/kontakt/novi/$', TemplateView.as_view(template_name='parts/kontakt_novi.html')),
+    url(r'^part/kontaktosoba/novi/$', TemplateView.as_view(template_name='parts/kontaktosoba_novi.html')),
     url(r'^search/', FirmaSearchView.as_view()),
+    url(r'^api/tim/$', TimCreate.as_view()),
+    url(r'^api/uloga/user/(?P<user_fk>[0-9]+)/$', UlogaDetails.as_view()),
+    url(r'^api/uloga/$', UlogaDetails.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

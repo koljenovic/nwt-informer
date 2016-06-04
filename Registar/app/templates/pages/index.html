@@ -20,6 +20,9 @@
         }).when('/kontakt/novi/:idFirma', {
             templateUrl: '/part/kontakt/novi/',
             controller: 'KontaktCtrl'
+        }).when('/kontaktosoba/novi/:idFirma', {
+            templateUrl: '/part/kontaktosoba/novi/',
+            controller: 'KontaktOsobaCtrl'
         })
         .otherwise('/');
     });

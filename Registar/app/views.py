@@ -12,6 +12,7 @@ from rest_framework.mixins import ListModelMixin
 from drf_haystack.generics import HaystackGenericAPIView
 import json
 from django.contrib.auth import logout
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -91,6 +92,7 @@ class FirmaSearchView(ListModelMixin, HaystackGenericAPIView):
     # index_models = [Firma]
 
     serializer_class = FirmaIndexSerializer
+      
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -116,20 +118,35 @@ class VrstaKontaktaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VrstaKontaktaSerializer
 
 
+class TimCreate(generics.ListAPIView):
+    queryset = Kontakt.objects.all()
+    serializer_class = TimSerializer
+    
+    
+class UlogaDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Uloga.objects.all()
+    serializer_class = UlogaSerializer  
+    lookup_field = 'user_fk'  
+
+class UlogaCreate(generics.ListCreateAPIView):
+    queryset = Uloga.objects.all()
+    serializer_class = UlogaSerializer  
+       
+    
 class KontaktCreate(generics.ListCreateAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = KontaktSerializer
+    paginate_by = 100
+    paginate_by_param = 'page_size'
+    max_paginate_by = 500
+    
+
 
 
 class KontaktDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = KontaktSerializer
     
-"""
-class KontaktDetailFirma(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Kontakt.objects.all()
-    serializer_class = KontaktSerializer
-"""
 
 class AdresarCreate(generics.ListCreateAPIView):
     queryset = Adresar.objects.all()

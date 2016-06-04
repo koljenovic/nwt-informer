@@ -86,6 +86,12 @@ class Osoba(models.Model):
             'super': self.user_fk.is_superuser,
             'staff': self.user_fk.is_staff,
             }
+            
+class Uloga(models.Model):
+    user_fk = models.ForeignKey(User, on_delete=models.CASCADE)
+    naziv_uloge = models.CharField(max_length=250)
+    firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
+    
 
 # Preset enumerirane vrijednosti
 class VrstaKontakta(models.Model):
@@ -95,14 +101,15 @@ class VrstaKontakta(models.Model):
 class Kontakt(models.Model):
     firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
+    osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE)
     kontakt = models.CharField(max_length=250)
-    kategorija = models.IntegerField(null=True, blank=True)
     naziv = models.CharField(max_length=250, null=True, blank=True)
 
     def clean(self):
         if self.naziv is None:
             raise ValidationError(_('Naziv je obavezno polje.'))
-
+            
+            
 
 class Adresar(models.Model):
     osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE)

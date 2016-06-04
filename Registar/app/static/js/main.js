@@ -88,6 +88,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
     $scope.changeLanguage = function (key) {
         $translate.use(key);
     };
+    
     $.ajax({
         url: '/api/kontakt/',
         method: 'GET'
@@ -106,9 +107,95 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
                         $scope.kategorije.push($scope.dummy[i].naziv);
                 }
             }
-
         });
     });
+    
+    
+    
+	$.ajax({
+        url: '/api/uloga/',
+        method: 'GET'
+    }).then(function(data) {
+        $scope.dummy = data.results;
+        $scope.$apply(function() {
+            $scope.dummy.push(data.results);
+            $scope.brUloga = $scope.dummy.length - 1;
+
+            $scope.nazivuloge = [];
+            $scope.userid = [];
+            for (var i=0; i<$scope.brUloga; i++) {
+                if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
+                    $scope.nazivuloge.push($scope.dummy[i].naziv_uloge);
+                    $scope.userid.push($scope.dummy[i].user_fk);
+                }
+            } 
+
+
+            $.ajax({
+				url: '/api/osoba/',
+				method: 'GET'
+			}).then(function(data) {
+				$scope.dummy = data.results;
+				$scope.$apply(function() {
+					$scope.dummy.push(data.results);
+					$scope.brOsoba = $scope.dummy.length - 1;
+
+					$scope.osobe = [];
+				 	for (var j=0; j<$scope.userid.length; j++) {
+						for (var i=0; i<$scope.brOsoba; i++){
+							if ($scope.dummy[i].user_fk == $scope.userid[j]) 
+								$scope.osobe.push($scope.dummy[i]);
+						}
+					}  
+
+					$.ajax({
+						url: '/api/tim/',
+						method: 'GET'
+					}).then(function(data) {
+						$scope.dummy = data.results;
+						$scope.$apply(function() {
+							$scope.dummy.push(data.results);
+							$scope.brKontakta = $scope.dummy.length - 1;
+							
+							$scope.osobaKontakti = [];
+							
+						 	for (var i=0; i<$scope.osobe.length; i++) {
+						 		for (var j=0; j<$scope.brKontakta; j++) {
+							 		if (($scope.dummy[j].osoba_fk != null) && ($scope.dummy[j].osoba_fk == $scope.osobe[i].id)) {
+							 			$scope.osobaKontakti.push($scope.dummy[j]);
+									}
+								}
+							}
+
+							$scope.osobeDetails = []
+							for (var i=0; i<$scope.osobe.length; i++) {
+								var tmp = {id : $scope.osobe[i].id,
+										   ime : $scope.osobe[i].ime,
+										   prezime : $scope.osobe[i].prezime,
+										   uloga : $scope.nazivuloge[i]  };
+								var jsonStr = JSON.stringify(tmp, null, '\t');
+								var jsonObj = JSON.parse(jsonStr);
+								
+								$scope.osobeDetails.push(jsonObj);
+							}
+							
+						});
+					}); 
+					 
+				});
+			});
+                        
+        });
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+       
     $scope.search = function (searchString, slice_size=0) {
         return $http.get('/search/', { params: { 'text__startswith': searchString }})
             .then(function(response) {
@@ -210,6 +297,11 @@ app.run(function($rootScope, $http, $location) {
         });
     });
     $rootScope.isLoggedIn();
+});
+app.controller('KontaktOsobaCtrl', function ($scope, $routeParams, Osoba, User, Upload) {
+    $scope.saveOsobaKontakt = function () {
+        //$scope.hideKontakt = !$scope.hideKontakt;
+    }
 });
 app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload) {
     $scope.loadOsoba = function (osobaId) {
@@ -450,4 +542,15 @@ app.controller('KontaktCtrl', function ($scope, $http, $routeParams) {
         }
         return false;
     };
+});
+
+
+
+
+app.controller('TimCtrl', function ($scope, $http, $routeParams) {
+
+	
+	
+	
+
 });
