@@ -131,6 +131,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
             })
             .success(function(data) {
                 $scope.success = "Uspješno ste dodani u tim!";
+                $scope.izlistajClanoveTima();
             }).error(function(data) {
             	alert(jsonString);
             	$scope.failed = "Greška!";
@@ -153,26 +154,30 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
 /* 
 	****** IZLISTAVANJE KONTAKATA FIRME NA STRANICI FIRME - POČETAK ****** 
 */
-    $.ajax({
-        url: '/api/kontakt/',
-        method: 'GET'
-    }).then(function(data) {
-        $scope.dummy = data.results;
-        $scope.$apply(function() {
-            $scope.dummy.push(data.results);
-            $scope.quantity = $scope.dummy.length - 1;
+	$scope.izlistajKontakte = function() {
+		$.ajax({
+		    url: '/api/kontakt/',
+		    method: 'GET'
+		}).then(function(data) {
+		    $scope.temp = data.results;
+		    $scope.$apply(function() {
+		        $scope.temp.push(data.results);
+		        $scope.quantity = $scope.temp.length - 1;
 
-            $scope.kontakti = [];
-            $scope.kategorije = [];
-            for (var i=0; i<$scope.quantity; i++) {
-                if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
-                    $scope.kontakti.push($scope.dummy[i]);
-                    if($scope.kategorije.indexOf($scope.dummy[i].naziv) == -1)
-                        $scope.kategorije.push($scope.dummy[i].naziv);
-                }
-            }
-        });
-    });
+		        $scope.kontakti = [];
+		        $scope.kategorije = [];
+		        for (var i=0; i<$scope.quantity; i++) {
+		            if ($scope.temp[i].firma_fk == $routeParams['firmaId']) {
+		                $scope.kontakti.push($scope.temp[i]);
+		                if($scope.kategorije.indexOf($scope.temp[i].naziv) == -1)
+		                    $scope.kategorije.push($scope.temp[i].naziv);
+		            }
+		        }
+		    });
+		});
+    };
+    
+    $scope.izlistajKontakte();
 /* 
 	****** IZLISTAVANJE KONTAKATA FIRME NA STRANICI FIRME - KRAJ ****** 
 */
@@ -181,82 +186,86 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
 
 /* 
 	****** IZLISTAVANJE OSOBA U TIMU NA STRANICI FIRME - POČETAK ****** 
-*/   
-	$.ajax({
-        url: '/api/uloga/',
-        method: 'GET'
-    }).then(function(data) {
-        $scope.dummy = data.results;
-        $scope.$apply(function() {
-            $scope.dummy.push(data.results);
-            $scope.brUloga = $scope.dummy.length - 1;
+*/  
+	$scope.izlistajClanoveTima = function() { 
+		$.ajax({
+		    url: '/api/uloga/',
+		    method: 'GET'
+		}).then(function(data) {
+		    $scope.dummy = data.results;
+		    $scope.$apply(function() {
+		        $scope.dummy.push(data.results);
+		        $scope.brUloga = $scope.dummy.length - 1;
 
-            $scope.nazivuloge = [];
-            $scope.userid = [];
-            for (var i=0; i<$scope.brUloga; i++) {
-                if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
-                    $scope.nazivuloge.push($scope.dummy[i].naziv_uloge);
-                    $scope.userid.push($scope.dummy[i].user_fk);
-                }
-            } 
+		        $scope.nazivuloge = [];
+		        $scope.userid = [];
+		        for (var i=0; i<$scope.brUloga; i++) {
+		            if ($scope.dummy[i].firma_fk == $routeParams['firmaId']) {
+		                $scope.nazivuloge.push($scope.dummy[i].naziv_uloge);
+		                $scope.userid.push($scope.dummy[i].user_fk);
+		            }
+		        } 
 
 
-            $.ajax({
-				url: '/api/osoba/',
-				method: 'GET'
-			}).then(function(data) {
-				$scope.dummy = data.results;
-				$scope.$apply(function() {
-					$scope.dummy.push(data.results);
-					$scope.brOsoba = $scope.dummy.length - 1;
+		        $.ajax({
+					url: '/api/osoba/',
+					method: 'GET'
+				}).then(function(data) {
+					$scope.dummy = data.results;
+					$scope.$apply(function() {
+						$scope.dummy.push(data.results);
+						$scope.brOsoba = $scope.dummy.length - 1;
 
-					$scope.osobe = [];
-				 	for (var j=0; j<$scope.userid.length; j++) {
-						for (var i=0; i<$scope.brOsoba; i++){
-							if ($scope.dummy[i].user_fk == $scope.userid[j]) 
-								$scope.osobe.push($scope.dummy[i]);
-						}
-					}  
+						$scope.osobe = [];
+					 	for (var j=0; j<$scope.userid.length; j++) {
+							for (var i=0; i<$scope.brOsoba; i++){
+								if ($scope.dummy[i].user_fk == $scope.userid[j]) 
+									$scope.osobe.push($scope.dummy[i]);
+							}
+						}  
 
-					$.ajax({
-						url: '/api/tim/',
-						method: 'GET'
-					}).then(function(data) {
-						$scope.dummy = data.results;
-						$scope.$apply(function() {
-							$scope.dummy.push(data.results);
-							$scope.brKontakta = $scope.dummy.length - 1;
+						$.ajax({
+							url: '/api/tim/',
+							method: 'GET'
+						}).then(function(data) {
+							$scope.dummy = data.results;
+							$scope.$apply(function() {
+								$scope.dummy.push(data.results);
+								$scope.brKontakta = $scope.dummy.length - 1;
 							
-							$scope.osobaKontakti = [];
+								$scope.osobaKontakti = [];
 							
-						 	for (var i=0; i<$scope.osobe.length; i++) {
-						 		for (var j=0; j<$scope.brKontakta; j++) {
-							 		if (($scope.dummy[j].osoba_fk != null) && ($scope.dummy[j].osoba_fk == $scope.osobe[i].id)) {
-							 			$scope.osobaKontakti.push($scope.dummy[j]);
+							 	for (var i=0; i<$scope.osobe.length; i++) {
+							 		for (var j=0; j<$scope.brKontakta; j++) {
+								 		if (($scope.dummy[j].osoba_fk != null) && ($scope.dummy[j].osoba_fk == $scope.osobe[i].id)) {
+								 			$scope.osobaKontakti.push($scope.dummy[j]);
+										}
 									}
 								}
-							}
 
-							$scope.osobeDetails = []
-							for (var i=0; i<$scope.osobe.length; i++) {
-								var tmp = {id : $scope.osobe[i].id,
-										   ime : $scope.osobe[i].ime,
-										   prezime : $scope.osobe[i].prezime,
-										   uloga : $scope.nazivuloge[i]  };
-								var jsonStr = JSON.stringify(tmp, null, '\t');
-								var jsonObj = JSON.parse(jsonStr);
+								$scope.osobeDetails = []
+								for (var i=0; i<$scope.osobe.length; i++) {
+									var tmp = {id : $scope.osobe[i].id,
+											   ime : $scope.osobe[i].ime,
+											   prezime : $scope.osobe[i].prezime,
+											   uloga : $scope.nazivuloge[i]  };
+									var jsonStr = JSON.stringify(tmp, null, '\t');
+									var jsonObj = JSON.parse(jsonStr);
 								
-								$scope.osobeDetails.push(jsonObj);
-							}
+									$scope.osobeDetails.push(jsonObj);
+								}
 							
-						});
-					}); 
-					 
+							});
+						}); 
+						 
+					});
 				});
-			});
-                        
-        });
-    });
+		                    
+		    });
+		});
+    };
+    
+    $scope.izlistajClanoveTima();
     
 /* 
 	****** IZLISTAVANJE OSOBA U TIMU NA STRANICI FIRME - KRAJ ****** 
@@ -329,6 +338,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
     }
     $scope.loadFirma($routeParams['firmaId']);
     $scope.firmaId = $routeParams['firmaId'];
+    
 })
 app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
