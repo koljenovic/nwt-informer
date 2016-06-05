@@ -282,3 +282,9 @@ ul[id^="typeahead-"] {
 #successful {
 	color: green;
 }
+
+.md-button {
+  color : currentColor;
+}
+
+
