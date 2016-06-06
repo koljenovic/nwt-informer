@@ -13,7 +13,7 @@ from drf_haystack.generics import HaystackGenericAPIView
 import json
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
-
+from rest_framework.pagination import PageNumberPagination
 
 def index(request):
     return HttpResponse()
@@ -96,11 +96,16 @@ class FirmaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FirmaSerializer
 
 
+class SearchPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 500
+
 class FirmaSearchView(ListModelMixin, HaystackGenericAPIView):
     # index_models = [Firma]
 
     serializer_class = FirmaIndexSerializer
-      
+    pagination_class = SearchPagination
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

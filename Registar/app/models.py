@@ -94,9 +94,9 @@ class VrstaKontakta(models.Model):
 
 
 class Kontakt(models.Model):
-    firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE)
+    firma_fk = models.ForeignKey(Firma, on_delete=models.CASCADE, null=True)
     vrsta_fk = models.ForeignKey(VrstaKontakta, on_delete=models.CASCADE)
-    osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE)
+    osoba_fk = models.ForeignKey(Osoba, on_delete=models.CASCADE, null=True)
     kontakt = models.CharField(max_length=250)
     naziv = models.CharField(max_length=250, null=True, blank=True)
 
