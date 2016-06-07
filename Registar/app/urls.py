@@ -12,6 +12,7 @@ urlpatterns = [
     # url(r'^index/$', index, name='index'),
     url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
+    url(r'^api/uloge/(?P<user_fk>[0-9]+)/$', UlogaList_ByUserId.as_view()),
     url(r'^api/user/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
     url(r'^api/user/(?P<username>[a-zA-Z]+)/$', UserDetail_ByUsername.as_view()),
     url(r'^api/grad/$', GradCreate.as_view()),
@@ -24,6 +25,7 @@ urlpatterns = [
     url(r'^api/vrstakontakta/(?P<pk>[0-9]+)/$', VrstaKontaktaDetail.as_view()),
     url(r'^api/kontakt/$', KontaktCreate.as_view()),
     url(r'^api/kontakt/(?P<pk>[0-9]+)/$', KontaktDetail.as_view()),
+    url(r'^api/kontakti/(?P<osoba_fk>[0-9]+)/$', KontaktList_ByOsobaId.as_view()),
     url(r'^api/adresar/$', AdresarCreate.as_view()),
     url(r'^api/adresar/(?P<pk>[0-9]+)/$', AdresarDetail.as_view()),
     url(r'^osoba/$', OsobaFormView.as_view()),
@@ -34,8 +36,6 @@ urlpatterns = [
     url(r'^part/kontaktosoba/novi/$', TemplateView.as_view(template_name='parts/kontaktosoba_novi.html')),
     url(r'^search/', FirmaSearchView.as_view()),
     url(r'^api/tim/$', TimCreate.as_view()),
-    url(r'^api/uloga/(?P<pk>[0-9]+)/$', UlogaDetail.as_view()),
-    url(r'^api/uloga/$', UlogaCreate.as_view()),
     url(r'^currentuser/$', get_userid, name="get_userid"),
 ]
 

@@ -69,6 +69,31 @@ app.factory('Grad', ['$resource', function($resource) {
         {id: '@id'},
         {'query' : {'method': 'GET', isArray: false}});
 }]);
+app.factory('Kontakt', ['$resource', function($resource) {
+    return $resource('/api/kontakt/:id/',
+        {id: '@id'},
+        {'query' : {'method': 'GET', isArray: false}});
+}]);
+app.factory('Kontakti', ['$resource', function($resource) {
+    return $resource('/api/kontakti/:id/',
+        {id: '@id'},
+        {'query' : {'method': 'GET', isArray: false}});
+}]);
+app.factory('VrstaKontakta', ['$resource', function($resource) {
+    return $resource('/api/vrstakontakta/:id/',
+        {id: '@id'},
+        {'query' : {'method': 'GET', isArray: false}});
+}]);
+app.factory('Uloga', ['$resource', function($resource) {
+    return $resource('/api/uloga/:id/',
+        {id: '@id'},
+        {'query' : {'method': 'GET', isArray: false}});
+}]);
+app.factory('Uloge', ['$resource', function($resource) {
+    return $resource('/api/uloge/:id/',
+        {id: '@id'},
+        {'query' : {'method': 'GET', isArray: false}});
+}]);
 
 app.controller('SearchCtrl', function ($scope, $http) {
     $scope.legalese = false;
@@ -247,6 +272,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
 								for (var i=0; i<$scope.osobe.length; i++) {
 									var tmp = {id : $scope.osobe[i].id,
 											   ime : $scope.osobe[i].ime,
+                                               slika : $scope.osobe[i].slika,
 											   prezime : $scope.osobe[i].prezime,
 											   uloga : $scope.nazivuloge[i]  };
 									var jsonStr = JSON.stringify(tmp, null, '\t');
@@ -283,7 +309,7 @@ app.controller('PageCtrl', function ($scope, $http, $routeParams, $location, $tr
         });
     }
     $scope.searchSelect = function (item, model, label, event) {
-        $scope.loadFirma(item.id);
+        $scope.go('/firma/' + item.id);
     }
     $scope.saveChanges = function () {
         if($scope.editMode) {
@@ -344,6 +370,11 @@ app.run(function($rootScope, $http, $location) {
     $rootScope.go = function (path) {
         $location.path(path);
     };
+    $rootScope.oFilter = function (coll, field, value) {
+        return coll.filter(function(o) {
+            return o[field] == value;
+        });
+    };
     $rootScope.parseUrl = function (url) {
         $scope.parser = document.createElement('a');
         $scope.parser.href = url;
@@ -380,7 +411,8 @@ app.controller('KontaktOsobaCtrl', function ($scope, $routeParams, Osoba, User, 
         //$scope.hideKontakt = !$scope.hideKontakt;
     }
 });
-app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload) {
+app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload, Kontakt, VrstaKontakta, Kontakti, Uloga, Uloge, Firma) {
+    $scope.kontakti = [];
     $scope.loadOsoba = function (osobaId) {
         osobaId = !osobaId ? $scope.korisnik.id : osobaId;
         $scope.user = {}
@@ -389,11 +421,52 @@ app.controller('ProfilCtrl', function ($scope, $routeParams, Osoba, User, Upload
             osoba = Osoba.get({id: $scope.user.id}, function () {
                 $scope.osoba = osoba ? osoba : $scope.osoba;
                 $scope.osoba.slika = !$scope.osoba.slika ? '/media/profile.png' : $scope.osoba.slika;
+                $scope.loadKontakti($scope.user.id);
+                var uloga = Uloge.get({'id': $scope.user.id}, function () {
+                    $scope.uloga = uloga.results.length > 0 ? uloga.results[0] : {};
+                    $scope.uloga.firma = Firma.get({'id': $scope.uloga.firma_fk});
+                });
             });
         });
     };
+    $scope.vrstaMap = function (naziv) {
+        switch (naziv) {
+            case 'email':
+                return 'inbox';
+            case 'telefon':
+                return 'earphone';
+            case 'fax':
+                return 'print';
+            case 'mobitel':
+                return 'phone';
+            case 'adresa':
+                return 'home';
+        }
+    };
+    $scope.deleteKontakt = function (id) {
+        Kontakt.delete({'id': id}, function () {
+            $scope.kontakti = $scope.kontakti.filter(function (o) {
+                return o.id != id;
+            });
+        });
+    };
+    vrsteKontakta = VrstaKontakta.query(function () {
+        $scope.vrsteKontakta = vrsteKontakta.results;
+    });
     $scope.saveKontakt = function () {
         $scope.noviKontaktEdit = !$scope.noviKontaktEdit;
+        var kontakt = new Kontakt({
+            osoba_fk: $scope.user.id,
+            vrsta_fk: $scope.kontakt.vrsta.id,
+            kontakt: $scope.kontakt.value
+        });
+        kontakt.$save();
+        $scope.kontakti.push(kontakt);
+    }
+    $scope.loadKontakti = function (userId) {
+        kontakti = Kontakti.get({id: userId}, function () {
+            $scope.kontakti = kontakti.results;
+        });
     }
     $scope.saveChanges = function () {
         if($scope.editMode) {
@@ -468,7 +541,6 @@ app.controller('RegisterCtrl', function($scope, $http, $window, $cookies, django
         $scope.registration_data.csrfmiddlewaretoken = $cookies.get('csrftoken');
         $scope.registration_data.captcha_0 = $('#id_captcha_0').val();
         $scope.registration_data.captcha_1 = $('#id_captcha_1').val();
-        console.log($scope.registration_data);
         if ($scope.registration_data) {
             $http({
                 method: 'POST',

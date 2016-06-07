@@ -60,7 +60,9 @@ class Uloga(models.Model):
 @receiver(user_activated)
 def osoba_create_callback(sender, **kwargs):
     user = kwargs.get('user')
-    if not Osoba.objects.get(id=user.id):
+    try:
+        Osoba.objects.get(id=user.id)
+    except Osoba.DoesNotExist:
         Osoba.objects.create(id=user.id, user_fk=user, ime='', prezime='').save()
 
 class Osoba(models.Model):

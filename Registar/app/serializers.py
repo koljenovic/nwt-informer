@@ -3,6 +3,7 @@ from app.models import *
 from app.search_indexes import *
 from drf_haystack.serializers import HaystackSerializer
 
+
 class UlogaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Uloga
@@ -29,6 +30,7 @@ class FirmaIndexSerializer(HaystackSerializer):
         index_classes = [FirmaIndex]
         fields = ['text', 'naziv', 'id']
 
+
 class OsobaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Osoba
@@ -43,13 +45,13 @@ class KontaktSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kontakt
 
+
 class TimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kontakt
         fields = ['id', 'osoba_fk', 'kontakt', 'vrsta_fk']
         
 		
-
 class AdresarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adresar

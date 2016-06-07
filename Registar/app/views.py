@@ -75,7 +75,6 @@ class UserDetail_ByUsername(generics.RetrieveAPIView):
     lookup_field = 'username'
     serializer_class = UserSerializer
 
-
 class GradCreate(generics.ListCreateAPIView):
     queryset = Grad.objects.all()
     serializer_class = GradSerializer
@@ -134,23 +133,36 @@ class VrstaKontaktaDetail(generics.RetrieveUpdateDestroyAPIView):
 class TimCreate(generics.ListAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = TimSerializer
-       
-    
+
+
 class KontaktCreate(generics.ListCreateAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = KontaktSerializer
-    paginate_by = 100
-    paginate_by_param = 'page_size'
-    max_paginate_by = 500
-    
 
+
+class KontaktList_ByOsobaId(generics.ListAPIView):
+    lookup_field = 'osoba_fk'
+    serializer_class = KontaktSerializer
+
+    def get_queryset(self):
+        osoba_fk = self.kwargs['osoba_fk']
+        return Kontakt.objects.filter(osoba_fk__id=osoba_fk)
+
+
+class UlogaList_ByUserId(generics.ListAPIView):
+    lookup_field = 'user_fk'
+    serializer_class = UlogaSerializer
+
+    def get_queryset(self):
+        user_fk = self.kwargs['user_fk']
+        return Uloga.objects.filter(user_fk__id=user_fk)
 
 
 class KontaktDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Kontakt.objects.all()
     serializer_class = KontaktSerializer
-    
 
+    
 class AdresarCreate(generics.ListCreateAPIView):
     queryset = Adresar.objects.all()
     serializer_class = AdresarSerializer
